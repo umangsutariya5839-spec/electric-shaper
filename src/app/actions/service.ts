@@ -24,6 +24,28 @@ export async function createServiceItem(formData: FormData) {
   redirect('/admin/services')
 }
 
+export async function updateServiceItem(id: string, formData: FormData) {
+  const title = formData.get('title') as string
+  const shortDescription = formData.get('shortDescription') as string
+  const fullDescription = formData.get('fullDescription') as string
+  const imagePath = formData.get('imagePath') as string
+
+  await prisma.serviceItem.update({
+    where: { id },
+    data: {
+      title,
+      shortDescription,
+      fullDescription,
+      imagePath,
+    },
+  })
+
+  revalidatePath('/')
+  revalidatePath('/services')
+  revalidatePath('/admin/services')
+  redirect('/admin/services')
+}
+
 export async function deleteServiceItem(id: string) {
   await prisma.serviceItem.delete({
     where: { id },
