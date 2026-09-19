@@ -2,6 +2,8 @@ import PublicHeader from '@/components/layout/PublicHeader'
 import prisma from '@/lib/prisma'
 import { buildModuleMetadata } from '@/lib/cms/seo'
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   return buildModuleMetadata('light-decoration', {
     title: 'Light Decoration',
