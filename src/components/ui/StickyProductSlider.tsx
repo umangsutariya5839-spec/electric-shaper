@@ -3,7 +3,8 @@ import ClientProductSlider from './ClientProductSlider'
 
 export default async function StickyProductSlider() {
   const slides = await prisma.productSliderItem.findMany({
-    orderBy: { createdAt: 'asc' }
+    where: { isActive: true },
+    orderBy: [{ order: 'asc' }, { createdAt: 'asc' }]
   })
   
   return <ClientProductSlider slides={slides} />

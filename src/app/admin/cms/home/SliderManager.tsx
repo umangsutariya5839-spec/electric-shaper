@@ -18,6 +18,8 @@ export default function SliderManager({ items }: { items: any[] }) {
       imagePath: formData.get('imagePath'),
       features: formData.get('features'),
       specs: formData.get('specs'),
+      order: parseInt((formData.get('order') as string) || '0', 10),
+      isActive: formData.get('isActive') === 'on',
     }
     
     if (editingItem) {
@@ -70,6 +72,17 @@ export default function SliderManager({ items }: { items: any[] }) {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <label style={{ fontWeight: '500' }}>Display Order</label>
+              <input type="number" name="order" defaultValue={editingItem?.order ?? 0} style={inputStyle} />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', alignSelf: 'end', height: '38px' }}>
+              <input type="checkbox" id="slide-active" name="isActive" defaultChecked={editingItem ? editingItem.isActive : true} style={{ width: '18px', height: '18px' }} />
+              <label htmlFor="slide-active" style={{ fontWeight: '500' }}>Active (visible on website)</label>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <label style={{ fontWeight: '500' }}>Features (JSON)</label>
               <textarea name="features" defaultValue={editingItem?.features || ''} placeholder='["Feature 1", "Feature 2"]' style={{ ...inputStyle, minHeight: '120px' }} />
             </div>
@@ -95,6 +108,8 @@ export default function SliderManager({ items }: { items: any[] }) {
               <th style={{ padding: '12px' }}>Image</th>
               <th style={{ padding: '12px' }}>Title</th>
               <th style={{ padding: '12px' }}>Subtitle</th>
+              <th style={{ padding: '12px' }}>Order</th>
+              <th style={{ padding: '12px' }}>Status</th>
               <th style={{ padding: '12px', textAlign: 'right' }}>Actions</th>
             </tr>
           </thead>
@@ -106,6 +121,28 @@ export default function SliderManager({ items }: { items: any[] }) {
                 </td>
                 <td style={{ padding: '12px', fontWeight: '500' }}>{item.title}</td>
                 <td style={{ padding: '12px', color: 'var(--color-text-muted)' }}>{item.subtitle || '-'}</td>
+                <td style={{ padding: '12px', fontWeight: '500' }}>{item.order}</td>
+                <td style={{ padding: '12px' }}>
+                  <button
+                    onClick={async (e) => {
+                      e.preventDefault()
+                      await updateSliderItem(item.id, { isActive: !item.isActive })
+                    }}
+                    style={{
+                      background: 'none',
+                      border: '1px solid var(--color-border)',
+                      borderRadius: '4px',
+                      padding: '4px 10px',
+                      cursor: 'pointer',
+                      fontWeight: '500',
+                      fontSize: '0.875rem',
+                      color: item.isActive ? 'var(--color-success)' : 'var(--color-text-muted)'
+                    }}
+                    title={item.isActive ? 'Click to hide from website' : 'Click to show on website'}
+                  >
+                    {item.isActive ? 'Active' : 'Disabled'}
+                  </button>
+                </td>
                 <td style={{ padding: '12px', textAlign: 'right' }}>
                   <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
                     <button 
@@ -136,7 +173,7 @@ export default function SliderManager({ items }: { items: any[] }) {
             ))}
             {items.length === 0 && (
               <tr>
-                <td colSpan={4} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
+                <td colSpan={6} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
                   No slider items found.
                 </td>
               </tr>

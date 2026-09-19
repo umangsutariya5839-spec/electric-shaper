@@ -8,72 +8,72 @@ datasource db {
 }
 
 model Customer {
-  id              String   @id @default(uuid())
-  name            String
-  mobile          String
-  address         String?
-  totalBilled     Float    @default(0)
-  outstandingDue  Float    @default(0)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  jobs            Job[]
-  invoices        Invoice[]
+  id             String    @id @default(uuid())
+  name           String
+  mobile         String
+  address        String?
+  totalBilled    Float     @default(0)
+  outstandingDue Float     @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  jobs           Job[]
+  invoices       Invoice[]
 }
 
 model Job {
-  id                  String   @id @default(uuid())
-  jobNumber           String   @unique
-  customerId          String
-  customer            Customer @relation(fields: [customerId], references: [id])
-  
-  // Job Details
-  applianceDetails    String?
-  complaint           String?
-  receivedDate        DateTime @default(now())
-  deliveryDate        DateTime?
-  status              String   @default("Pending") // Pending, In Progress, Completed, Delivered
-  repairNotes         String?
-  
-  // Rewinding Specifics
-  motorType           String?
-  hp                  String?
-  phase               String?
-  wireSize            String?
-  turns               Int?
-  
-  // Charges
-  laborCharge         Float    @default(0)
-  materialCharge      Float    @default(0)
-  
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id         String   @id @default(uuid())
+  jobNumber  String   @unique
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
 
-  invoices            Invoice[]
+  // Job Details
+  applianceDetails String?
+  complaint        String?
+  receivedDate     DateTime  @default(now())
+  deliveryDate     DateTime?
+  status           String    @default("Pending") // Pending, In Progress, Completed, Delivered
+  repairNotes      String?
+
+  // Rewinding Specifics
+  motorType String?
+  hp        String?
+  phase     String?
+  wireSize  String?
+  turns     Int?
+
+  // Charges
+  laborCharge    Float @default(0)
+  materialCharge Float @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  invoices Invoice[]
 }
 
 model Invoice {
-  id                String   @id @default(uuid())
-  invoiceNumber     String   @unique
-  customerId        String
-  customer          Customer @relation(fields: [customerId], references: [id])
-  jobId             String?
-  job               Job?     @relation(fields: [jobId], references: [id])
-  
-  billDate          DateTime @default(now())
-  dueDate           DateTime?
-  
-  materialCharges   Float    @default(0)
-  laborCharges      Float    @default(0)
-  discount          Float    @default(0)
-  totalBill         Float
-  
-  amountReceived    Float    @default(0)
-  outstandingAmount Float    @default(0)
-  
-  status            String   @default("Pending") // Pending, Partially Cleared, Cleared
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id            String   @id @default(uuid())
+  invoiceNumber String   @unique
+  customerId    String
+  customer      Customer @relation(fields: [customerId], references: [id])
+  jobId         String?
+  job           Job?     @relation(fields: [jobId], references: [id])
+
+  billDate DateTime  @default(now())
+  dueDate  DateTime?
+
+  materialCharges Float @default(0)
+  laborCharges    Float @default(0)
+  discount        Float @default(0)
+  totalBill       Float
+
+  amountReceived    Float @default(0)
+  outstandingAmount Float @default(0)
+
+  status String @default("Pending") // Pending, Partially Cleared, Cleared
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ServiceItem {
@@ -82,6 +82,9 @@ model ServiceItem {
   shortDescription String
   fullDescription  String?
   imagePath        String
+  isActive         Boolean  @default(true)
+  isFeatured       Boolean  @default(false)
+  order            Int      @default(0)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
@@ -116,45 +119,45 @@ model SiteSettings {
 }
 
 model ContactInfo {
-  id              String   @id @default("global")
-  phone           String   @default("+91 98765 43210")
-  whatsapp        String   @default("1234567890")
-  email           String   @default("info@intec.com")
-  address         String   @default("Mumbai, Maharashtra")
-  googleMapLink   String?
-  businessHours   String   @default("Mon - Sat: 8:00 AM - 6:00 PM")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id            String   @id @default("global")
+  phone         String   @default("+91 98765 43210")
+  whatsapp      String   @default("1234567890")
+  email         String   @default("info@intec.com")
+  address       String   @default("Mumbai, Maharashtra")
+  googleMapLink String?
+  businessHours String   @default("Mon - Sat: 8:00 AM - 6:00 PM")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model HomeContent {
-  id                 String   @id @default("global")
-  heroBannerText     String   @default("EST. 2005 • PREMIER ELECTRICAL SERVICES")
-  heroHeading        String   @default("Crafting Dynamic Innovations.")
-  heroDescription    String   @default("In the electric motor industry, we balance detailed technical expertise with precision engineering.")
-  heroButtonText     String   @default("Schedule Repair")
-  heroButtonLink     String   @default("/book")
+  id                  String  @id @default("global")
+  heroBannerText      String  @default("EST. 2005 • PREMIER ELECTRICAL SERVICES")
+  heroHeading         String  @default("Crafting Dynamic Innovations.")
+  heroDescription     String  @default("In the electric motor industry, we balance detailed technical expertise with precision engineering.")
+  heroButtonText      String  @default("Schedule Repair")
+  heroButtonLink      String  @default("/book")
   heroBackgroundImage String? @default("/hero.png")
-  
-  whyChooseUsPoints  String?  // Store as JSON string or comma separated
-  statsExperience    String   @default("20+")
-  statsRepaired      String   @default("5k+")
-  
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+
+  whyChooseUsPoints String? // Store as JSON string or comma separated
+  statsExperience   String  @default("20+")
+  statsRepaired     String  @default("5k+")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model AboutContent {
-  id               String   @id @default("global")
-  aboutHeading     String   @default("Precision in every phase.")
-  aboutDescription String   @default("Since 2005, Intec has set the standard for electrical and mechanical repair.")
-  companyImage     String?  @default("/panel.png")
+  id               String  @id @default("global")
+  aboutHeading     String  @default("Precision in every phase.")
+  aboutDescription String  @default("Since 2005, Intec has set the standard for electrical and mechanical repair.")
+  companyImage     String? @default("/panel.png")
   mission          String?
   vision           String?
-  experienceYears  String   @default("20+")
-  
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  experienceYears  String  @default("20+")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model GalleryItem {
@@ -163,6 +166,9 @@ model GalleryItem {
   description String?
   category    String?
   imagePath   String
+  isActive    Boolean  @default(true)
+  isFeatured  Boolean  @default(false)
+  order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -173,6 +179,8 @@ model Testimonial {
   review        String
   rating        Int      @default(5)
   customerImage String?
+  isActive      Boolean  @default(true)
+  order         Int      @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
@@ -181,6 +189,8 @@ model FAQItem {
   id        String   @id @default(cuid())
   question  String
   answer    String
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -190,17 +200,46 @@ model NavigationItem {
   label     String
   href      String
   order     Int      @default(0)
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model ProductSliderItem {
+  id        String   @id @default(uuid())
+  title     String
+  subtitle  String?
+  imagePath String
+  features  String? // JSON string
+  specs     String? // JSON string
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LightDecorationItem {
   id          String   @id @default(uuid())
   title       String
-  subtitle    String?
+  description String?
+  category    String?
   imagePath   String
-  features    String?  // JSON string
-  specs       String?  // JSON string
+  isActive    Boolean  @default(true)
+  isFeatured  Boolean  @default(false)
+  order       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model PageSeo {
+  moduleId       String   @id
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String?
+  canonicalUrl   String?
+  ogTitle        String?
+  ogDescription  String?
+  ogImage        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

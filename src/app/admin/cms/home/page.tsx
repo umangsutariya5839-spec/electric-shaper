@@ -8,7 +8,7 @@ export default async function HomeCMSPage() {
   })
   
   const sliderItems = await prisma.productSliderItem.findMany({
-    orderBy: { createdAt: 'desc' }
+    orderBy: [{ order: 'asc' }, { createdAt: 'asc' }]
   })
 
   return (
@@ -23,3 +23,4 @@ export default async function HomeCMSPage() {
     </div>
   )
 }
+

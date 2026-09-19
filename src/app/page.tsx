@@ -2,16 +2,29 @@ import PublicHeader from '@/components/layout/PublicHeader'
 import Link from 'next/link'
 import prisma from '@/lib/prisma'
 import StickyProductSlider from '@/components/ui/StickyProductSlider'
+import { buildModuleMetadata } from '@/lib/cms/seo'
+
+export async function generateMetadata() {
+  return buildModuleMetadata('home', {
+    title: 'Intec Electric & Rewinding Works',
+    description: 'Expert motor rewinding, repair and industrial electrical services.'
+  })
+}
 
 export default async function LandingPage() {
   const services = await prisma.serviceItem.findMany({
-    orderBy: { createdAt: 'asc' },
+    where: { isActive: true },
+    orderBy: [{ isFeatured: 'desc' }, { order: 'asc' }, { createdAt: 'asc' }],
     take: 3
   })
   
   const homeContent = await prisma.homeContent.findUnique({ where: { id: 'global' } })
   const aboutContent = await prisma.aboutContent.findUnique({ where: { id: 'global' } })
-  const galleryItems = await prisma.galleryItem.findMany({ take: 4 })
+  const galleryItems = await prisma.galleryItem.findMany({
+    where: { isActive: true },
+    orderBy: [{ isFeatured: 'desc' }, { order: 'asc' }, { createdAt: 'desc' }],
+    take: 4
+  })
   const siteSettings = await prisma.siteSettings.findUnique({ where: { id: 'global' } })
 
   return (
@@ -243,3 +256,5 @@ export default async function LandingPage() {
     </div>
   )
 }
+
+

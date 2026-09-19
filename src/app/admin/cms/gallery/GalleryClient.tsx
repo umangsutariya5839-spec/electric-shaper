@@ -18,8 +18,11 @@ export default function GalleryClient({ initialItems }: { initialItems: any[] })
           const description = formData.get('description') as string
           const category = formData.get('category') as string
           const imagePath = formData.get('imagePath') as string
+          const order = parseInt((formData.get('order') as string) || '0', 10)
+          const isActive = formData.get('isActive') === 'on'
+          const isFeatured = formData.get('isFeatured') === 'on'
           if (title && imagePath) {
-            await createGalleryItem({ title, description, category, imagePath })
+            await createGalleryItem({ title, description, category, imagePath, order: Number.isNaN(order) ? 0 : order, isActive, isFeatured })
             // HTML Form automatically resets on successful Server Action if not e.preventDefault()
             // but we can manually reset by finding form
             document.getElementById('add-gallery-form')?.closest('form')?.reset()
@@ -57,6 +60,21 @@ export default function GalleryClient({ initialItems }: { initialItems: any[] })
               placeholder="/images/gallery/1.jpg or https://..."
             />
           </div>
+          <div>
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Display Order</label>
+            <input
+              type="number" name="order" defaultValue={0}
+              style={{ width: '100%', padding: '8px', border: '1px solid var(--color-border)', borderRadius: '4px' }}
+            />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <input type="checkbox" id="gallery-add-active" name="isActive" defaultChecked style={{ width: '18px', height: '18px' }} />
+            <label htmlFor="gallery-add-active" style={{ fontWeight: '500' }}>Active (visible on website)</label>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <input type="checkbox" id="gallery-add-featured" name="isFeatured" style={{ width: '18px', height: '18px' }} />
+            <label htmlFor="gallery-add-featured" style={{ fontWeight: '500' }}>Featured (show in the Home Page gallery section first)</label>
+          </div>
           <button type="submit" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', width: 'fit-content', marginTop: '0.5rem' }}>
             <Plus size={20} /> Add Item
           </button>
@@ -80,8 +98,11 @@ export default function GalleryClient({ initialItems }: { initialItems: any[] })
                     const description = formData.get('description') as string
                     const category = formData.get('category') as string
                     const imagePath = formData.get('imagePath') as string
+                    const order = parseInt((formData.get('order') as string) || '0', 10)
+                    const isActive = formData.get('isActive') === 'on'
+                    const isFeatured = formData.get('isFeatured') === 'on'
                     if (title && imagePath) {
-                      await updateGalleryItem(item.id, { title, description, category, imagePath })
+                      await updateGalleryItem(item.id, { title, description, category, imagePath, order: Number.isNaN(order) ? 0 : order, isActive, isFeatured })
                       setEditingId(null)
                     }
                   }} style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -107,6 +128,18 @@ export default function GalleryClient({ initialItems }: { initialItems: any[] })
                       <label style={{ fontSize: '0.875rem', fontWeight: '500' }}>Image URL</label>
                       <input type="text" name="imagePath" defaultValue={item.imagePath} required style={{ width: '100%', padding: '6px', border: '1px solid var(--color-border)', borderRadius: '4px' }} />
                     </div>
+                    <div>
+                      <label style={{ fontSize: '0.875rem', fontWeight: '500' }}>Display Order</label>
+                      <input type="number" name="order" defaultValue={item.order ?? 0} style={{ width: '100%', padding: '6px', border: '1px solid var(--color-border)', borderRadius: '4px' }} />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <input type="checkbox" name="isActive" defaultChecked={item.isActive} style={{ width: '18px', height: '18px' }} />
+                      <label style={{ fontSize: '0.875rem', fontWeight: '500' }}>Active (visible on website)</label>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <input type="checkbox" name="isFeatured" defaultChecked={item.isFeatured} style={{ width: '18px', height: '18px' }} />
+                      <label style={{ fontSize: '0.875rem', fontWeight: '500' }}>Featured (Home Page gallery)</label>
+                    </div>
                     <button type="submit" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
                       <Save size={18} /> Save Changes
                     </button>
@@ -122,7 +155,25 @@ export default function GalleryClient({ initialItems }: { initialItems: any[] })
                     <div style={{ padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                         <h3 style={{ fontWeight: 'bold', fontSize: '1.1rem', margin: 0, wordBreak: 'break-word', paddingRight: '0.5rem' }}>{item.title}</h3>
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                          <form action={async () => { await updateGalleryItem(item.id, { isActive: !item.isActive }) }}>
+                            <button
+                              type="submit"
+                              style={{
+                                background: 'none',
+                                border: '1px solid var(--color-border)',
+                                borderRadius: '4px',
+                                padding: '2px 8px',
+                                cursor: 'pointer',
+                                fontWeight: '500',
+                                fontSize: '0.75rem',
+                                color: item.isActive ? 'var(--color-success)' : 'var(--color-text-muted)'
+                              }}
+                              title={item.isActive ? 'Click to hide from website' : 'Click to show on website'}
+                            >
+                              {item.isActive ? 'Active' : 'Disabled'}
+                            </button>
+                          </form>
                           <button type="button" onClick={() => setEditingId(item.id)} style={{ background: 'none', border: 'none', color: 'var(--color-primary)', cursor: 'pointer', padding: '4px' }} title="Edit Item">
                             <Edit2 size={18} />
                           </button>
@@ -158,3 +209,5 @@ export default function GalleryClient({ initialItems }: { initialItems: any[] })
     </div>
   )
 }
+
+

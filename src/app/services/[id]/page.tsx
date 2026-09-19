@@ -8,7 +8,7 @@ export default async function ServiceDetailsPage({ params }: { params: { id: str
     where: { id: params.id }
   })
   
-  if (!service) {
+  if (!service || !service.isActive) {
     notFound()
   }
 
@@ -74,3 +74,4 @@ export default async function ServiceDetailsPage({ params }: { params: { id: str
     </div>
   )
 }
+

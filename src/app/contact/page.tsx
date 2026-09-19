@@ -1,6 +1,14 @@
 import PublicHeader from '@/components/layout/PublicHeader'
 import prisma from '@/lib/prisma'
 import Link from 'next/link'
+import { buildModuleMetadata } from '@/lib/cms/seo'
+
+export async function generateMetadata() {
+  return buildModuleMetadata('contact', {
+    title: 'Contact Us',
+    description: 'Get in touch for motor repair and electrical service enquiries.'
+  })
+}
 
 export default async function ContactPage() {
   const contactInfo = await prisma.contactInfo.findUnique({ where: { id: 'global' } })

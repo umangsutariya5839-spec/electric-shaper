@@ -3,10 +3,24 @@
 import { useState } from 'react'
 import { createNavigationItem, updateNavigationItem, deleteNavigationItem } from '@/app/actions/cms'
 import { Plus, Trash2, Edit } from 'lucide-react'
+import { listModules, listInternalRoutes, isExternalUrl, isValidInternalRoute } from '@/lib/cms/registry'
 
 export default function NavigationClient({ items }: { items: any[] }) {
   const [editingItem, setEditingItem] = useState<any | null>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  // Live "Connection Preview" state, driven by the form inputs.
+  const [previewLabel, setPreviewLabel] = useState('')
+  const [previewHref, setPreviewHref] = useState('')
+  const [previewActive, setPreviewActive] = useState(true)
+
+  const matchedModule = listModules().find((m) => m.route === previewHref && m.id !== 'navigation')
+  const routeKind = isExternalUrl(previewHref)
+    ? 'External'
+    : previewHref
+      ? (isValidInternalRoute(previewHref) ? 'Internal' : 'Invalid')
+      : '-'
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -15,7 +29,8 @@ export default function NavigationClient({ items }: { items: any[] }) {
     const data = {
       label: formData.get('label') as string,
       href: formData.get('href') as string,
-      order: parseInt(formData.get('order') as string || '0', 10)
+      order: parseInt(formData.get('order') as string || '0', 10),
+      isActive: formData.get('isActive') === 'on'
     }
 
     if (editingItem) {
@@ -63,6 +78,11 @@ export default function NavigationClient({ items }: { items: any[] }) {
             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Order</label>
             <input type="number" name="order" defaultValue={editingItem?.order ?? 0} style={inputStyle} />
           </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', height: '42px' }}>
+            <input type="checkbox" id="nav-active" name="isActive" defaultChecked={editingItem ? editingItem.isActive : true} style={{ width: '18px', height: '18px' }} />
+            <label htmlFor="nav-active" style={{ fontWeight: '500' }}>Active</label>
+          </div>
           
           <button type="submit" disabled={loading} className="btn btn-primary" style={{ padding: '10px 20px', height: '42px', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             {editingItem ? 'Save' : <><Plus size={20} /> Add</>}
@@ -78,6 +98,7 @@ export default function NavigationClient({ items }: { items: any[] }) {
               <th style={{ padding: '12px' }}>Order</th>
               <th style={{ padding: '12px' }}>Label</th>
               <th style={{ padding: '12px' }}>URL</th>
+              <th style={{ padding: '12px' }}>Status</th>
               <th style={{ padding: '12px', textAlign: 'right' }}>Actions</th>
             </tr>
           </thead>
@@ -87,6 +108,27 @@ export default function NavigationClient({ items }: { items: any[] }) {
                 <td style={{ padding: '12px', fontWeight: '500' }}>{item.order}</td>
                 <td style={{ padding: '12px', fontWeight: '500' }}>{item.label}</td>
                 <td style={{ padding: '12px', color: 'var(--color-text-muted)' }}>{item.href}</td>
+                <td style={{ padding: '12px' }}>
+                  <button
+                    onClick={async (e) => {
+                      e.preventDefault()
+                      await updateNavigationItem(item.id, { isActive: !item.isActive })
+                    }}
+                    style={{
+                      background: 'none',
+                      border: '1px solid var(--color-border)',
+                      borderRadius: '4px',
+                      padding: '4px 10px',
+                      cursor: 'pointer',
+                      fontWeight: '500',
+                      fontSize: '0.875rem',
+                      color: item.isActive ? 'var(--color-success)' : 'var(--color-text-muted)'
+                    }}
+                    title={item.isActive ? 'Click to hide from website' : 'Click to show on website'}
+                  >
+                    {item.isActive ? 'Active' : 'Disabled'}
+                  </button>
+                </td>
                 <td style={{ padding: '12px', textAlign: 'right' }}>
                   <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
                     <button 
@@ -117,7 +159,7 @@ export default function NavigationClient({ items }: { items: any[] }) {
             ))}
             {items.length === 0 && (
               <tr>
-                <td colSpan={4} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
+                <td colSpan={5} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
                   No custom navigation links added.
                 </td>
               </tr>

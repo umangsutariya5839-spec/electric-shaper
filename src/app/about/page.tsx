@@ -1,6 +1,15 @@
 import PublicHeader from '@/components/layout/PublicHeader'
 import prisma from '@/lib/prisma'
+import { buildModuleMetadata } from '@/lib/cms/seo'
 
+export async function generateMetadata() {
+  return buildModuleMetadata('about', {
+    title: 'About Us',
+    description: 'Learn about our history, mission and engineering experience.'
+  })
+}
+
+export const dynamic = 'force-dynamic';
 export default async function AboutPage() {
   const about = await prisma.aboutContent.findUnique({ where: { id: 'global' } })
   const siteSettings = await prisma.siteSettings.findUnique({ where: { id: 'global' } })

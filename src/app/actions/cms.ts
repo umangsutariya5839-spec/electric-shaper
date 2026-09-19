@@ -2,9 +2,42 @@
 
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
+import { getSessionRole } from './auth'
+import { isValidInternalRoute, isExternalUrl, listInternalRoutes, getModule } from '@/lib/cms/registry'
+
+// Reuses the existing cookie-based session. CMS content may only be mutated by SUPER_ADMIN.
+async function requireSuperAdmin() {
+  const role = await getSessionRole()
+  if (role !== 'SUPER_ADMIN') {
+    throw new Error('Unauthorized: SUPER_ADMIN role required.')
+  }
+}
+
+function validateNavigationData(data: any) {
+  const label = String(data?.label ?? '').trim()
+  const href = String(data?.href ?? '').trim()
+  const order = Number(data?.order ?? 0)
+
+  if (!label) return { error: 'Navigation label is required.' }
+  if (!Number.isFinite(order)) return { error: 'Navigation order must be a number.' }
+  if (!href) return { error: 'Navigation URL is required.' }
+
+  if (href.startsWith('/')) {
+    if (!isValidInternalRoute(href)) {
+      return {
+        error: `Invalid internal route "${href}". Allowed routes: ${listInternalRoutes().join(", ")}`,
+      }
+    }
+  } else if (!isExternalUrl(href)) {
+    return { error: 'URL must be an internal route or an http(s) external URL.' }
+  }
+
+  return { error: null }
+}
 
 // --- Settings ---
 export async function updateSiteSettings(data: any) {
+  await requireSuperAdmin()
   await prisma.siteSettings.upsert({
     where: { id: 'global' },
     update: data,
@@ -15,6 +48,7 @@ export async function updateSiteSettings(data: any) {
 }
 
 export async function updateContactInfo(data: any) {
+  await requireSuperAdmin()
   await prisma.contactInfo.upsert({
     where: { id: 'global' },
     update: data,
@@ -27,6 +61,7 @@ export async function updateContactInfo(data: any) {
 
 // --- Home & Slider ---
 export async function updateHomeContent(data: any) {
+  await requireSuperAdmin()
   await prisma.homeContent.upsert({
     where: { id: 'global' },
     update: data,
@@ -37,18 +72,21 @@ export async function updateHomeContent(data: any) {
 }
 
 export async function createSliderItem(data: any) {
+  await requireSuperAdmin()
   await prisma.productSliderItem.create({ data })
   revalidatePath('/')
   revalidatePath('/admin/cms/home')
 }
 
 export async function updateSliderItem(id: string, data: any) {
+  await requireSuperAdmin()
   await prisma.productSliderItem.update({ where: { id }, data })
   revalidatePath('/')
   revalidatePath('/admin/cms/home')
 }
 
 export async function deleteSliderItem(id: string) {
+  await requireSuperAdmin()
   try {
     await prisma.productSliderItem.delete({ where: { id } })
   } catch (error) {
@@ -60,6 +98,7 @@ export async function deleteSliderItem(id: string) {
 
 // --- About ---
 export async function updateAboutContent(data: any) {
+  await requireSuperAdmin()
   await prisma.aboutContent.upsert({
     where: { id: 'global' },
     update: data,
@@ -71,6 +110,7 @@ export async function updateAboutContent(data: any) {
 
 // --- Services --- (Using existing routes or we can add here)
 export async function updateServiceItem(id: string, data: any) {
+  await requireSuperAdmin()
   await prisma.serviceItem.update({ where: { id }, data })
   revalidatePath('/')
   revalidatePath('/services')
@@ -78,6 +118,7 @@ export async function updateServiceItem(id: string, data: any) {
 }
 
 export async function createServiceItem(data: any) {
+  await requireSuperAdmin()
   await prisma.serviceItem.create({ data })
   revalidatePath('/')
   revalidatePath('/services')
@@ -85,6 +126,7 @@ export async function createServiceItem(data: any) {
 }
 
 export async function deleteServiceItem(id: string) {
+  await requireSuperAdmin()
   try {
     await prisma.serviceItem.delete({ where: { id } })
   } catch (e) {}
@@ -95,33 +137,48 @@ export async function deleteServiceItem(id: string) {
 
 // --- Gallery ---
 export async function createGalleryItem(data: any) {
+  await requireSuperAdmin()
   await prisma.galleryItem.create({ data })
+  revalidatePath('/')
   revalidatePath('/gallery')
   revalidatePath('/admin/cms/gallery')
 }
 
 export async function updateGalleryItem(id: string, data: any) {
+  await requireSuperAdmin()
   await prisma.galleryItem.update({ where: { id }, data })
+  revalidatePath('/')
   revalidatePath('/gallery')
   revalidatePath('/admin/cms/gallery')
 }
 
 export async function deleteGalleryItem(id: string) {
+  await requireSuperAdmin()
   try {
     await prisma.galleryItem.delete({ where: { id } })
   } catch (e) {}
+  revalidatePath('/')
   revalidatePath('/gallery')
   revalidatePath('/admin/cms/gallery')
 }
 
 // --- Testimonials ---
 export async function createTestimonial(data: any) {
+  await requireSuperAdmin()
   await prisma.testimonial.create({ data })
   revalidatePath('/testimonials')
   revalidatePath('/admin/cms/testimonials')
 }
 
+export async function updateTestimonial(id: string, data: any) {
+  await requireSuperAdmin()
+  await prisma.testimonial.update({ where: { id }, data })
+  revalidatePath('/testimonials')
+  revalidatePath('/admin/cms/testimonials')
+}
+
 export async function deleteTestimonial(id: string) {
+  await requireSuperAdmin()
   try {
     await prisma.testimonial.delete({ where: { id } })
   } catch(e) {}
@@ -131,12 +188,21 @@ export async function deleteTestimonial(id: string) {
 
 // --- FAQ ---
 export async function createFAQ(data: any) {
+  await requireSuperAdmin()
   await prisma.fAQItem.create({ data })
   revalidatePath('/faq')
   revalidatePath('/admin/cms/faq')
 }
 
+export async function updateFAQ(id: string, data: any) {
+  await requireSuperAdmin()
+  await prisma.fAQItem.update({ where: { id }, data })
+  revalidatePath('/faq')
+  revalidatePath('/admin/cms/faq')
+}
+
 export async function deleteFAQ(id: string) {
+  await requireSuperAdmin()
   try {
     await prisma.fAQItem.delete({ where: { id } })
   } catch(e) {}
@@ -146,21 +212,87 @@ export async function deleteFAQ(id: string) {
 
 // --- Navigation ---
 export async function createNavigationItem(data: any) {
+  await requireSuperAdmin()
+  const validation = validateNavigationData(data)
+  if (validation.error) return validation
+
   await prisma.navigationItem.create({ data })
   revalidatePath('/')
   revalidatePath('/admin/cms/navigation')
+  return { error: null }
 }
 
 export async function updateNavigationItem(id: string, data: any) {
+  await requireSuperAdmin()
+  const validation = validateNavigationData(data)
+  if (validation.error) return validation
+
   await prisma.navigationItem.update({ where: { id }, data })
   revalidatePath('/')
   revalidatePath('/admin/cms/navigation')
+  return { error: null }
 }
-
 export async function deleteNavigationItem(id: string) {
+  await requireSuperAdmin()
   try {
     await prisma.navigationItem.delete({ where: { id } })
   } catch (e) {}
   revalidatePath('/')
   revalidatePath('/admin/cms/navigation')
 }
+
+
+
+
+
+// --- Light Decoration ---
+export async function createLightDecorationItem(data: any) {
+  await requireSuperAdmin()
+  await prisma.lightDecorationItem.create({ data })
+  revalidatePath('/light-decoration')
+  revalidatePath('/admin/cms/light-decoration')
+  revalidatePath('/admin/cms/connections')
+}
+
+export async function updateLightDecorationItem(id: string, data: any) {
+  await requireSuperAdmin()
+  await prisma.lightDecorationItem.update({ where: { id }, data })
+  revalidatePath('/light-decoration')
+  revalidatePath('/admin/cms/light-decoration')
+  revalidatePath('/admin/cms/connections')
+}
+
+export async function deleteLightDecorationItem(id: string) {
+  await requireSuperAdmin()
+  try {
+    await prisma.lightDecorationItem.delete({ where: { id } })
+  } catch (e) {}
+  revalidatePath('/light-decoration')
+  revalidatePath('/admin/cms/light-decoration')
+  revalidatePath('/admin/cms/connections')
+}
+
+// --- Page SEO ---
+export async function updatePageSeo(moduleId: string, data: any) {
+  await requireSuperAdmin()
+  const mod = getModule(moduleId)
+
+  if (!mod) return { error: `Unknown module "${moduleId}".` }
+  if (!mod.supportsSeo) {
+    return {
+      error: `"${mod.label}" does not render a page that reads SEO metadata.`,
+    }
+  }
+
+  await prisma.pageSeo.upsert({
+    where: { moduleId },
+    update: data,
+    create: { moduleId, ...data },
+  })
+
+  revalidatePath(mod.route)
+  revalidatePath('/admin/cms/seo')
+  return { error: null }
+}
+
+

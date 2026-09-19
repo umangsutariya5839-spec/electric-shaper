@@ -1,10 +1,19 @@
 import PublicHeader from '@/components/layout/PublicHeader'
 import prisma from '@/lib/prisma'
 import Link from 'next/link'
+import { buildModuleMetadata } from '@/lib/cms/seo'
+
+export async function generateMetadata() {
+  return buildModuleMetadata('services', {
+    title: 'Our Services',
+    description: 'Motor repair, rewinding, maintenance and electrical services.'
+  })
+}
 
 export default async function ServicesPage() {
   const services = await prisma.serviceItem.findMany({
-    orderBy: { createdAt: 'asc' }
+    where: { isActive: true },
+    orderBy: [{ order: 'asc' }, { createdAt: 'asc' }]
   })
   
   const siteSettings = await prisma.siteSettings.findUnique({ where: { id: 'global' } })
@@ -85,3 +94,4 @@ export default async function ServicesPage() {
     </div>
   )
 }
+

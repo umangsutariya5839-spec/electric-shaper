@@ -49,6 +49,21 @@ export default async function EditServicePage({ params }: { params: { id: string
             <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>For now, use /hero.png, /pump.png, or /panel.png.</span>
           </div>
 
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: '500' }}>Display Order</label>
+            <input type="number" name="order" defaultValue={service.order ?? 0} style={inputStyle} />
+            <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Lower numbers appear first on the website.</span>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <input type="checkbox" id="service-active" name="isActive" defaultChecked={service.isActive} style={{ width: '18px', height: '18px' }} />
+            <label htmlFor="service-active" style={{ fontWeight: '500' }}>Active (visible on website)</label>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <input type="checkbox" id="service-featured" name="isFeatured" defaultChecked={service.isFeatured} style={{ width: '18px', height: '18px' }} />
+            <label htmlFor="service-featured" style={{ fontWeight: '500' }}>Featured (show in the Home Page services section first)</label>
+          </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
             <Link href="/admin/services" className="btn btn-secondary" style={{ backgroundColor: 'transparent', color: 'var(--color-text-main)', border: '1px solid var(--color-border)' }}>
               Cancel
@@ -71,3 +86,4 @@ const inputStyle = {
   fontFamily: 'inherit',
   width: '100%'
 }
+

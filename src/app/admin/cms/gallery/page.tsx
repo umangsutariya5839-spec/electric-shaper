@@ -3,7 +3,7 @@ import GalleryClient from './GalleryClient'
 
 export default async function GalleryAdminPage() {
   const items = await prisma.galleryItem.findMany({
-    orderBy: { createdAt: 'desc' }
+    orderBy: [{ order: 'asc' }, { createdAt: 'desc' }]
   })
 
   return (
@@ -16,3 +16,4 @@ export default async function GalleryAdminPage() {
     </div>
   )
 }
+

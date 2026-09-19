@@ -46,8 +46,11 @@ export default function Sidebar({ role }: { role: string }) {
             <SidebarLink href="/admin/cms/about" icon={<Users size={20} />} label="About Us" />
             <SidebarLink href="/admin/services" icon={<Package size={20} />} label="Services" />
             <SidebarLink href="/admin/cms/gallery" icon={<LayoutDashboard size={20} />} label="Gallery" />
+            <SidebarLink href="/admin/cms/light-decoration" icon={<LayoutDashboard size={20} />} label="Light Decoration" />
             <SidebarLink href="/admin/cms/testimonials" icon={<Users size={20} />} label="Testimonials" />
             <SidebarLink href="/admin/cms/faq" icon={<FileText size={20} />} label="FAQ" />
+            <SidebarLink href="/admin/cms/connections" icon={<FileText size={20} />} label="Content Connections" />
+            <SidebarLink href="/admin/cms/seo" icon={<Wrench size={20} />} label="SEO Settings" />
           </nav>
         </>
       )}

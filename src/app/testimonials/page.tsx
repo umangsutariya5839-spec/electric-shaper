@@ -1,9 +1,18 @@
 import PublicHeader from '@/components/layout/PublicHeader'
 import prisma from '@/lib/prisma'
+import { buildModuleMetadata } from '@/lib/cms/seo'
+
+export async function generateMetadata() {
+  return buildModuleMetadata('testimonials', {
+    title: 'Customer Reviews',
+    description: 'What our customers say about our workmanship and service.'
+  })
+}
 
 export default async function TestimonialsPage() {
   const testimonials = await prisma.testimonial.findMany({
-    orderBy: { createdAt: 'desc' }
+    where: { isActive: true },
+    orderBy: [{ order: 'asc' }, { createdAt: 'desc' }]
   })
   
   const siteSettings = await prisma.siteSettings.findUnique({ where: { id: 'global' } })
@@ -73,3 +82,4 @@ export default async function TestimonialsPage() {
     </div>
   )
 }
+

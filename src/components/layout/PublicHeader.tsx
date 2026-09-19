@@ -4,7 +4,10 @@ import ClientNav from './ClientNav'
 export default async function PublicHeader() {
   const siteSettings = await prisma.siteSettings.findUnique({ where: { id: 'global' } })
   const contactInfo = await prisma.contactInfo.findUnique({ where: { id: 'global' } })
-  const navItems = await prisma.navigationItem.findMany({ orderBy: { order: 'asc' } })
+  const navItems = await prisma.navigationItem.findMany({
+    where: { isActive: true },
+    orderBy: [{ order: 'asc' }, { createdAt: 'asc' }]
+  })
 
   return (
     <ClientNav 

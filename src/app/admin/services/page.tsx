@@ -2,10 +2,11 @@ import prisma from '@/lib/prisma'
 import Link from 'next/link'
 import { Plus, Trash2 } from 'lucide-react'
 import { deleteServiceItem } from '@/app/actions/service'
+import { updateServiceItem } from '@/app/actions/cms'
 
 export default async function ServicesPage() {
   const services = await prisma.serviceItem.findMany({
-    orderBy: { createdAt: 'desc' }
+    orderBy: [{ order: 'asc' }, { createdAt: 'desc' }]
   })
 
   return (
@@ -25,6 +26,10 @@ export default async function ServicesPage() {
               <th style={{ padding: '12px' }}>Image</th>
               <th style={{ padding: '12px' }}>Title</th>
               <th style={{ padding: '12px' }}>Description</th>
+              <th style={{ padding: '12px' }}>Order</th>
+              <th style={{ padding: '12px' }}>Featured</th>
+              
+              <th style={{ padding: '12px' }}>Status</th>
               <th style={{ padding: '12px', textAlign: 'right' }}>Actions</th>
             </tr>
           </thead>
@@ -37,6 +42,32 @@ export default async function ServicesPage() {
                 <td style={{ padding: '12px', fontWeight: '500' }}>{service.title}</td>
                 <td style={{ padding: '12px', color: 'var(--color-text-muted)', maxWidth: '400px' }}>
                   {service.shortDescription.substring(0, 80)}...
+                </td>
+                <td style={{ padding: '12px', fontWeight: '500' }}>{service.order}</td>
+                <td style={{ padding: '12px', color: 'var(--color-text-muted)' }}>{service.isFeatured ? 'Yes' : 'No'}</td>
+                
+                <td style={{ padding: '12px' }}>
+                  <form action={async () => {
+                    'use server'
+                    await updateServiceItem(service.id, { isActive: !service.isActive })
+                  }}>
+                    <button
+                      type="submit"
+                      style={{
+                        background: 'none',
+                        border: '1px solid var(--color-border)',
+                        borderRadius: '4px',
+                        padding: '4px 10px',
+                        cursor: 'pointer',
+                        fontWeight: '500',
+                        fontSize: '0.875rem',
+                        color: service.isActive ? 'var(--color-success)' : 'var(--color-text-muted)'
+                      }}
+                      title={service.isActive ? 'Click to hide from website' : 'Click to show on website'}
+                    >
+                      {service.isActive ? 'Active' : 'Disabled'}
+                    </button>
+                  </form>
                 </td>
                 <td style={{ padding: '12px', textAlign: 'right' }}>
                   <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
@@ -57,7 +88,7 @@ export default async function ServicesPage() {
             ))}
             {services.length === 0 && (
               <tr>
-                <td colSpan={4} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
+                <td colSpan={6} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
                   No services added yet. These will appear on your public landing page.
                 </td>
               </tr>
@@ -68,3 +99,6 @@ export default async function ServicesPage() {
     </div>
   )
 }
+
+
+
