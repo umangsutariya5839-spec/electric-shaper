@@ -272,6 +272,56 @@ export async function deleteLightDecorationItem(id: string) {
   revalidatePath('/admin/cms/connections')
 }
 
+export async function seedSampleLightDecorations() {
+  await requireSuperAdmin()
+  const samples = [
+    {
+      title: 'Royal Wedding & Event Lighting',
+      category: '🎉 Event Decoration',
+      description: 'Grand canopy warm fairy lights, floral stage backdrops, entrance tunnel lights, and ambient chandelier setups for weddings and receptions.',
+      imagePath: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1000&auto=format&fit=crop&q=80',
+      order: 1,
+      isActive: true,
+      isFeatured: true
+    },
+    {
+      title: 'Balcony & Garden Architectural LED',
+      category: '🏠 Home & Outdoor Decoration',
+      description: 'Waterproof warm white LED strip profiles, terrace lighting, tree string fairy lights, and garden pathway illumination.',
+      imagePath: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1000&auto=format&fit=crop&q=80',
+      order: 2,
+      isActive: true,
+      isFeatured: true
+    },
+    {
+      title: 'Festive & Party RGB Color Illumination',
+      category: '💡 LED Light Decoration',
+      description: 'Multi-color smart RGB LED strips, dynamic color-chasing patterns, and festival decorative hanging bulbs.',
+      imagePath: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1000&auto=format&fit=crop&q=80',
+      order: 3,
+      isActive: true,
+      isFeatured: true
+    },
+    {
+      title: 'Bespoke Custom Light Installation',
+      category: '✨ Custom Decoration',
+      description: 'Tailored decorative lighting designed to your venue dimensions with custom color themes, dimming zones, and synchronized effects.',
+      imagePath: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=1000&auto=format&fit=crop&q=80',
+      order: 4,
+      isActive: true,
+      isFeatured: true
+    }
+  ]
+
+  for (const item of samples) {
+    await prisma.lightDecorationItem.create({ data: item })
+  }
+
+  revalidatePath('/light-decoration')
+  revalidatePath('/admin/cms/light-decoration')
+  revalidatePath('/admin/cms/connections')
+}
+
 // --- Page SEO ---
 export async function updatePageSeo(moduleId: string, data: any) {
   await requireSuperAdmin()

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createGalleryItem, updateGalleryItem, deleteGalleryItem } from '@/app/actions/cms'
 import { Trash2, Plus, Edit2, X, Save } from 'lucide-react'
+import ImageInputWithPreview from '@/components/admin/ImageInputWithPreview'
 
 export default function GalleryClient({ initialItems }: { initialItems: any[] }) {
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -52,14 +53,12 @@ export default function GalleryClient({ initialItems }: { initialItems: any[] })
               placeholder="E.g. Services, Team, Workshop"
             />
           </div>
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Image URL / Path</label>
-            <input 
-              type="text" name="imagePath" required 
-              style={{ width: '100%', padding: '8px', border: '1px solid var(--color-border)', borderRadius: '4px' }}
-              placeholder="/images/gallery/1.jpg or https://..."
-            />
-          </div>
+          <ImageInputWithPreview
+            name="imagePath"
+            required={true}
+            label="Gallery Image"
+            placeholder="Paste Chrome image URL (e.g. https://...)"
+          />
           <div>
             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Display Order</label>
             <input
@@ -124,10 +123,12 @@ export default function GalleryClient({ initialItems }: { initialItems: any[] })
                       <label style={{ fontSize: '0.875rem', fontWeight: '500' }}>Category</label>
                       <input type="text" name="category" defaultValue={item.category || ''} style={{ width: '100%', padding: '6px', border: '1px solid var(--color-border)', borderRadius: '4px' }} />
                     </div>
-                    <div>
-                      <label style={{ fontSize: '0.875rem', fontWeight: '500' }}>Image URL</label>
-                      <input type="text" name="imagePath" defaultValue={item.imagePath} required style={{ width: '100%', padding: '6px', border: '1px solid var(--color-border)', borderRadius: '4px' }} />
-                    </div>
+                    <ImageInputWithPreview
+                      name="imagePath"
+                      defaultValue={item.imagePath}
+                      required={true}
+                      label="Image"
+                    />
                     <div>
                       <label style={{ fontSize: '0.875rem', fontWeight: '500' }}>Display Order</label>
                       <input type="number" name="order" defaultValue={item.order ?? 0} style={{ width: '100%', padding: '6px', border: '1px solid var(--color-border)', borderRadius: '4px' }} />
