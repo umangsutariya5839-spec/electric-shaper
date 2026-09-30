@@ -1,5 +1,7 @@
 import PublicHeader from '@/components/layout/PublicHeader'
 
+export const dynamic = 'force-dynamic'
+
 export default function TermsPage() {
   return (
     <div style={{ backgroundColor: 'var(--color-background)', minHeight: '100vh', color: 'var(--color-text-main)' }}>

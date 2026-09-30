@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Upload, Link as LinkIcon, X, Check, Image as ImageIcon, Sparkles } from 'lucide-react'
 
 interface ImageInputWithPreviewProps {
@@ -24,6 +24,10 @@ export default function ImageInputWithPreview({
   const [isLoaded, setIsLoaded] = useState(false)
   const [isCompressing, setIsCompressing] = useState(false)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+  useEffect(() => {
+    setValue(defaultValue || '')
+  }, [defaultValue])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]

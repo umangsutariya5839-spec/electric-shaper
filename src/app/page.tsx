@@ -4,6 +4,8 @@ import prisma from '@/lib/prisma'
 import StickyProductSlider from '@/components/ui/StickyProductSlider'
 import { buildModuleMetadata } from '@/lib/cms/seo'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata() {
   return buildModuleMetadata('home', {
     title: 'Intec Electric & Rewinding Works',

@@ -276,38 +276,56 @@ export async function seedSampleLightDecorations() {
   await requireSuperAdmin()
   const samples = [
     {
-      title: 'Royal Wedding & Event Lighting',
-      category: '🎉 Event Decoration',
-      description: 'Grand canopy warm fairy lights, floral stage backdrops, entrance tunnel lights, and ambient chandelier setups for weddings and receptions.',
-      imagePath: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1000&auto=format&fit=crop&q=80',
+      title: 'Diwali & Festival Home Exterior Lighting',
+      category: '🪔 Festival & Diwali Lighting',
+      description: 'Exterior fairy light curtains cascading down residential balconies, terrace border jhalar, and festive entrance lighting with safe outdoor wiring.',
+      imagePath: 'https://images.unsplash.com/photo-1514517521153-1be72277b32f?w=1000&auto=format&fit=crop&q=80',
       order: 1,
       isActive: true,
       isFeatured: true
     },
     {
-      title: 'Balcony & Garden Architectural LED',
-      category: '🏠 Home & Outdoor Decoration',
-      description: 'Waterproof warm white LED strip profiles, terrace lighting, tree string fairy lights, and garden pathway illumination.',
-      imagePath: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?w=1000&auto=format&fit=crop&q=80',
+      title: 'Royal Wedding Lawn Canopy & Mandap Lighting',
+      category: '💍 Wedding & Mandap Illumination',
+      description: 'Overhead warm fairy light ceiling canopy over wedding lawn, mandap spotlights, and floral backdrop warm glow.',
+      imagePath: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1000&auto=format&fit=crop&q=80',
       order: 2,
       isActive: true,
       isFeatured: true
     },
     {
-      title: 'Festive & Party RGB Color Illumination',
-      category: '💡 LED Light Decoration',
-      description: 'Multi-color smart RGB LED strips, dynamic color-chasing patterns, and festival decorative hanging bulbs.',
-      imagePath: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1000&auto=format&fit=crop&q=80',
+      title: 'Terrace Garden & Rooftop Party Lighting',
+      category: '🏡 Home & Balcony Lighting',
+      description: 'Waterproof warm white hanging filament bulbs across terrace railings with cozy evening seating ambiance.',
+      imagePath: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1000&auto=format&fit=crop&q=80',
       order: 3,
       isActive: true,
       isFeatured: true
     },
     {
-      title: 'Bespoke Custom Light Installation',
-      category: '✨ Custom Decoration',
-      description: 'Tailored decorative lighting designed to your venue dimensions with custom color themes, dimming zones, and synchronized effects.',
-      imagePath: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=1000&auto=format&fit=crop&q=80',
+      title: 'Wedding Grand Entrance Light Tunnel',
+      category: '💍 Wedding & Mandap Illumination',
+      description: 'Arched walkway covered with thousands of golden rice lights welcoming guests into the venue.',
+      imagePath: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=1000&auto=format&fit=crop&q=80',
       order: 4,
+      isActive: true,
+      isFeatured: true
+    },
+    {
+      title: 'Birthday & Family Celebration Fairy Backdrop',
+      category: '🎂 Birthday & Party Celebration',
+      description: 'Fairy light photo backdrop with warm globe bulbs, stage spots, and festive room illumination.',
+      imagePath: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1000&auto=format&fit=crop&q=80',
+      order: 5,
+      isActive: true,
+      isFeatured: true
+    },
+    {
+      title: 'Night Garden & Tree Trunk Fairy Wrapping',
+      category: '🏡 Home & Balcony Lighting',
+      description: 'Detailed trunk and branch tree wrapping with weatherproof micro LEDs creating a magical night landscape.',
+      imagePath: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1000&auto=format&fit=crop&q=80',
+      order: 6,
       isActive: true,
       isFeatured: true
     }

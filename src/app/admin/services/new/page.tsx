@@ -1,6 +1,7 @@
 import { createServiceItem } from '@/app/actions/service'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
+import ImageInputWithPreview from '@/components/admin/ImageInputWithPreview'
 
 export default function NewServicePage() {
   return (
@@ -30,11 +31,13 @@ export default function NewServicePage() {
             <textarea name="fullDescription" rows={6} style={inputStyle} placeholder="Detailed description of the service..."></textarea>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label style={{ fontWeight: '500' }}>Image Path</label>
-            <input type="text" name="imagePath" style={inputStyle} placeholder="e.g. /hero.png or /pump.png" defaultValue="/hero.png" required />
-            <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>For now, use /hero.png, /pump.png, or /panel.png.</span>
-          </div>
+          <ImageInputWithPreview
+            name="imagePath"
+            defaultValue="/hero.png"
+            required={true}
+            label="Service Image"
+            placeholder="Paste Chrome image URL or upload photo from device"
+          />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label style={{ fontWeight: '500' }}>Display Order</label>
@@ -73,4 +76,3 @@ const inputStyle = {
   fontFamily: 'inherit',
   width: '100%'
 }
-

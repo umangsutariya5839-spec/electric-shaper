@@ -2,6 +2,8 @@ import PublicHeader from '@/components/layout/PublicHeader'
 import Link from 'next/link'
 import { createBookingRequest } from '@/app/actions/booking'
 
+export const dynamic = 'force-dynamic'
+
 export default function BookingPage({
   searchParams,
 }: {

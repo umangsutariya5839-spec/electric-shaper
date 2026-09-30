@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createSliderItem, updateSliderItem, deleteSliderItem } from '@/app/actions/cms'
 import { Trash2, Edit } from 'lucide-react'
+import ImageInputWithPreview from '@/components/admin/ImageInputWithPreview'
 
 export default function SliderManager({ items }: { items: any[] }) {
   const [loading, setLoading] = useState(false)
@@ -65,10 +66,13 @@ export default function SliderManager({ items }: { items: any[] }) {
             </div>
           </div>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label style={{ fontWeight: '500' }}>Image Path</label>
-            <input name="imagePath" defaultValue={editingItem?.imagePath || ''} placeholder="/products/motor1.png" style={inputStyle} required />
-          </div>
+          <ImageInputWithPreview
+            name="imagePath"
+            defaultValue={editingItem?.imagePath || ''}
+            required={true}
+            label="Product Slide Image"
+            placeholder="Paste Chrome image URL or upload photo from device"
+          />
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>

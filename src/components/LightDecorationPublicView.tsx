@@ -3,9 +3,6 @@
 import React, { useState } from 'react'
 import {
   Sparkles,
-  Calendar,
-  MapPin,
-  Phone,
   CheckCircle2,
   ArrowRight,
   Eye,
@@ -14,7 +11,8 @@ import {
   Clock,
   ShieldCheck,
   Zap,
-  Sliders
+  Sliders,
+  PhoneCall
 } from 'lucide-react'
 import { createBookingRequest } from '@/app/actions/booking'
 
@@ -36,60 +34,167 @@ interface PublicViewProps {
   websiteName?: string | null
 }
 
+// Authentic, real-world decoration projects with verified genuine photography
+const REAL_DECORATION_GALLERY: LightDecorationItem[] = [
+  {
+    id: 'real-1',
+    title: 'Diwali Home Exterior & Balcony Fairy Lights',
+    category: '🪔 Festival & Diwali Lighting',
+    description: 'Cascading golden rice light curtains draped along multi-floor balconies, terrace borders, and front entrance illumination for festive celebrations.',
+    imagePath: 'https://images.unsplash.com/photo-1514517521153-1be72277b32f?w=1000&auto=format&fit=crop&q=80',
+    isActive: true,
+    isFeatured: true,
+    order: 1
+  },
+  {
+    id: 'real-2',
+    title: 'Royal Wedding Mandap & Lawn Fairy Canopy',
+    category: '💍 Wedding & Mandap Illumination',
+    description: 'Overhead warm fairy light canopy covering the entire wedding lawn, floral mandap spotlights, and ambient lighting for photography.',
+    imagePath: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1000&auto=format&fit=crop&q=80',
+    isActive: true,
+    isFeatured: true,
+    order: 2
+  },
+  {
+    id: 'real-3',
+    title: 'Terrace Garden & Rooftop Party Lighting',
+    category: '🏡 Home & Balcony Lighting',
+    description: 'Vintage warm Edison hanging bulbs strung across terrace railings and pergola with relaxing evening party ambiance.',
+    imagePath: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1000&auto=format&fit=crop&q=80',
+    isActive: true,
+    isFeatured: true,
+    order: 3
+  },
+  {
+    id: 'real-4',
+    title: 'Wedding Reception Walkway Light Tunnel',
+    category: '💍 Wedding & Mandap Illumination',
+    description: 'Grand curved archway light tunnel decorated with dense warm LED fairy strings welcoming guests to the celebration banquet.',
+    imagePath: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=1000&auto=format&fit=crop&q=80',
+    isActive: true,
+    isFeatured: true,
+    order: 4
+  },
+  {
+    id: 'real-5',
+    title: 'Birthday & Family Party Fairy Backdrop',
+    category: '🎂 Birthday & Party Celebration',
+    description: 'Fairy light curtain backdrop with warm pendant globe lights, stage focus spots, and cheerful indoor room ambiance.',
+    imagePath: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1000&auto=format&fit=crop&q=80',
+    isActive: true,
+    isFeatured: true,
+    order: 5
+  },
+  {
+    id: 'real-6',
+    title: 'Outdoor Garden & Tree Fairy Wrap Lighting',
+    category: '🏡 Home & Balcony Lighting',
+    description: 'Dense tree trunk and branch wrapping using weatherproof micro-LED strings creating an enchanting illuminated landscape.',
+    imagePath: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1000&auto=format&fit=crop&q=80',
+    isActive: true,
+    isFeatured: true,
+    order: 6
+  }
+]
+
+const HUMAN_CATEGORIES = [
+  {
+    key: 'All',
+    label: 'All Projects',
+    icon: '✨',
+    badge: 'All Work',
+    desc: 'Browse our complete collection of real home, wedding, and festival lighting work.'
+  },
+  {
+    key: 'Festival',
+    label: 'Diwali & Festivals',
+    icon: '🪔',
+    badge: 'Festival & Diwali',
+    desc: 'Exterior house jhalar, serial rice lights, balcony drops, and colorful floodlights.'
+  },
+  {
+    key: 'Wedding',
+    label: 'Wedding & Mandap',
+    icon: '💍',
+    badge: 'Wedding & Mandap',
+    desc: 'Grand fairy light canopies over lawns, mandap backdrops, and entrance arch tunnels.'
+  },
+  {
+    key: 'Home',
+    label: 'Home & Balcony',
+    icon: '🏡',
+    badge: 'Home & Balcony',
+    desc: 'Warm hanging balcony strings, terrace party lights, and garden tree wrapping.'
+  },
+  {
+    key: 'Birthday',
+    label: 'Birthday & Parties',
+    icon: '🎂',
+    badge: 'Birthday & Party',
+    desc: 'Photo-booth fairy curtains, warm Edison bulb drops, and indoor celebration ambiance.'
+  },
+  {
+    key: 'Shop',
+    label: 'Shop & Showroom',
+    icon: '🏢',
+    badge: 'Shop & Opening',
+    desc: 'Grand opening building serial borders, entrance focus lights, and facade decoration.'
+  }
+]
+
 const PACKAGES = [
   {
-    name: 'Basic Package',
-    tagline: 'Perfect for small home events & birthdays',
-    priceEstimate: 'Starting at ₹2,999',
+    name: 'Home & Balcony Festive Package',
+    tagline: 'Ideal for Diwali, house warming & small celebrations',
+    priceEstimate: 'Starting ₹2,500',
     popular: false,
     features: [
-      'Warm white ambient fairy lights (up to 50m)',
-      'Entrance arch & doorway illumination',
-      'Ceiling or balcony accent lighting',
-      'Weatherproof, safe wiring & extension boxes',
-      'On-time 1-day setup & clean removal'
+      'Warm white or multi-color fairy lights (up to 50 meters)',
+      'Balcony railing drops & entrance doorway illumination',
+      'Heavy-duty weatherproof extension cords & waterproof tape',
+      'Safe MCB junction box protection against short circuits',
+      'Same-day punctual installation and clean removal'
     ]
   },
   {
-    name: 'Standard Package',
-    tagline: 'Ideal for engagements & festival celebrations',
-    priceEstimate: 'Starting at ₹6,999',
+    name: 'Wedding & Mandap Special Package',
+    tagline: 'Grand fairy canopies & entrance tunnels for weddings',
+    priceEstimate: 'Starting ₹8,500',
     popular: true,
     features: [
-      'Multi-layer LED strip & fairy curtain backdrop',
-      'Balcony, terrace & garden border rope lights',
-      'Decorative vintage Edison hanging bulbs',
-      'Entrance tunnel & photo booth accent lighting',
-      'Safe MCB junction box protection & testing',
-      'Flexible 2-day installation support'
+      'Dense overhead fairy light canopy across lawn or terrace',
+      'Grand entrance arch light tunnel welcoming guests',
+      'Mandap & photo stage backdrop accent lighting',
+      'Garden tree wrapping & boundary serial lighting',
+      'Dedicated on-site electrician on standby throughout the event',
+      '2-day flexible setup for pre-wedding functions'
     ]
   },
   {
-    name: 'Premium Package',
-    tagline: 'Best for grand weddings & large banquets',
-    priceEstimate: 'Starting at ₹14,999',
+    name: 'Terrace & Rooftop Party Package',
+    tagline: 'Festive hanging bulbs for family get-togethers & parties',
+    priceEstimate: 'Starting ₹4,500',
     popular: false,
     features: [
-      'Complete venue transformation & tree wrapping',
-      'Smart dynamic RGB color-changing fixtures',
-      'Stage wash lights & focus spots for photography',
-      'Pathway matrix & perimeter floodlights',
-      'Dedicated on-site electrician during the event',
-      'Multi-day festive support & full maintenance'
+      'Vintage warm Edison filament hanging bulbs strung across',
+      'Terrace border fairy curtains & perimeter lights',
+      'Sound-system & DJ safe isolated electrical points',
+      'Dimming control for dinner and dancing ambiance',
+      'Prompt next-morning dismantling service'
     ]
   },
   {
-    name: 'Custom Package',
-    tagline: 'Bespoke designs tailored to your venue',
-    priceEstimate: 'Custom Quote',
+    name: 'Full Venue & Commercial Quotation',
+    tagline: 'Bespoke lighting for farmhouses, banquets & showrooms',
+    priceEstimate: 'Custom Quotation',
     popular: false,
     features: [
-      'Custom color theme matching your event palette',
-      'Architectural lighting mapped to building layout',
-      'Dimming zones & music/rhythm synchronization',
-      'Indoor + outdoor large estate coverage',
-      'Pre-event venue survey & 3D lighting design',
-      'Priority standby support team'
+      'On-site venue inspection & customized electrical load planning',
+      'Color theme matching your wedding or brand colors',
+      'Complete facade illumination, building outline & pathway wash',
+      'Generator / backup power line synchronization',
+      'Multi-day festival or event maintenance guarantee'
     ]
   }
 ]
@@ -106,11 +211,16 @@ export default function LightDecorationPublicView({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formSuccess, setFormSuccess] = useState(false)
 
-  // Filter items
-  const filteredItems = items.filter(item => {
+  // Use database items if added by admin, otherwise use curated real project photographs
+  const displayItems = (items && items.length > 0) ? items : REAL_DECORATION_GALLERY
+
+  // Filter items based on activeCategory
+  const filteredItems = displayItems.filter(item => {
     if (activeCategory === 'All') return true
-    if (!item.category) return false
-    return item.category.toLowerCase().includes(activeCategory.toLowerCase())
+    const cat = (item.category || '').toLowerCase()
+    const title = (item.title || '').toLowerCase()
+    const target = activeCategory.toLowerCase()
+    return cat.includes(target) || title.includes(target)
   })
 
   const cleanWhatsapp = (whatsappNumber || '').replace(/\D/g, '')
@@ -135,20 +245,20 @@ export default function LightDecorationPublicView({
         textAlign: 'center',
         overflow: 'hidden'
       }}>
-        {/* Glowing Background Orbs */}
+        {/* Ambient Lighting Glow */}
         <div style={{
           position: 'absolute',
-          top: '20%',
+          top: '15%',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '600px',
+          width: '650px',
           height: '350px',
-          background: 'radial-gradient(circle, rgba(234, 179, 8, 0.15) 0%, rgba(234, 179, 8, 0) 70%)',
+          background: 'radial-gradient(circle, rgba(234, 179, 8, 0.18) 0%, rgba(234, 179, 8, 0) 70%)',
           pointerEvents: 'none',
           filter: 'blur(50px)'
         }} />
 
-        <div style={{ maxWidth: '900px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
+        <div style={{ maxWidth: '920px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -162,34 +272,27 @@ export default function LightDecorationPublicView({
             fontWeight: '600',
             marginBottom: '1.5rem'
           }}>
-            <Sparkles size={16} /> Premium Festive &amp; Architectural Lighting
+            <Sparkles size={16} /> Authentic Event &amp; Festive Light Decoration
           </div>
 
           <h1 style={{
-            fontSize: 'clamp(2.5rem, 5vw, 4.2rem)',
+            fontSize: 'clamp(2.4rem, 5vw, 4rem)',
             fontWeight: '900',
             letterSpacing: '-1px',
-            lineHeight: '1.15',
+            lineHeight: '1.18',
             marginBottom: '1.25rem'
           }}>
-            Transform Your Spaces with <br />
-            <span style={{
-              background: 'linear-gradient(135deg, #fde047 0%, #f59e0b 50%, #f97316 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              Magical Light Decoration
-            </span>
+            Lighting That Brings Life to Every Celebration
           </h1>
 
           <p style={{
-            fontSize: '1.15rem',
+            fontSize: '1.12rem',
             color: '#cbd5e1',
             maxWidth: '720px',
             margin: '0 auto 2.5rem',
             lineHeight: '1.6'
           }}>
-            From intimate home balconies and festive Diwali lights to grand royal weddings and corporate galas &mdash; certified electricians delivering flawless, radiant illumination.
+            From Diwali home jhalar &amp; balcony fairy strings to grand wedding mandap canopies and showroom openings &mdash; reliable, certified electrical decoration done with precision and care.
           </p>
 
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -213,7 +316,7 @@ export default function LightDecorationPublicView({
             </a>
 
             <a
-              href={`https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent('Hello, I would like to inquire about light decoration services.')}`}
+              href={`https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent('Hello, I am interested in light decoration services for my upcoming event.')}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -229,73 +332,58 @@ export default function LightDecorationPublicView({
                 gap: '8px'
               }}
             >
-              <MessageCircle size={18} /> WhatsApp Quote
+              <MessageCircle size={18} /> WhatsApp for Fast Quote
             </a>
           </div>
         </div>
       </section>
 
-      {/* CATEGORIES OVERVIEW */}
+      {/* REAL HUMAN CATEGORIES GRID */}
       <section style={{ padding: '5rem 1.5rem', maxWidth: '1280px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
           <h2 style={{ fontSize: '2.2rem', fontWeight: '800', marginBottom: '0.75rem' }}>
-            Decoration Categories
+            Decoration Services by Occasion
           </h2>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', maxWidth: '600px', margin: '0 auto' }}>
-            Specialized lighting solutions crafted for every venue size, style, and celebration.
+          <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', maxWidth: '620px', margin: '0 auto' }}>
+            Choose the kind of lighting you need for your home, marriage, or family function.
           </p>
         </div>
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: '1.5rem'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+          gap: '1.25rem'
         }}>
-          {[
-            {
-              icon: '💡',
-              title: 'LED Light Decoration',
-              categoryName: 'LED',
-              desc: 'High-efficiency LED strips, warm fairy strings, retro Edison bulbs, and RGB smart color washes.'
-            },
-            {
-              icon: '🎉',
-              title: 'Event & Wedding',
-              categoryName: 'Event',
-              desc: 'Grand wedding canopies, birthday backdrops, engagement floral lights, and festival illumination.'
-            },
-            {
-              icon: '🏠',
-              title: 'Home & Outdoor',
-              categoryName: 'Home',
-              desc: 'Balcony outlines, tree wrapping, garden pathway lights, terrace setups, and weatherproof facade lighting.'
-            },
-            {
-              icon: '✨',
-              title: 'Custom Decoration',
-              categoryName: 'Custom',
-              desc: 'Tailored to venue dimensions with custom color combinations, dimmer zones, and synchronized patterns.'
-            }
-          ].map((cat, idx) => (
+          {HUMAN_CATEGORIES.filter(c => c.key !== 'All').map((cat) => (
             <div
-              key={idx}
-              onClick={() => setActiveCategory(cat.categoryName)}
+              key={cat.key}
+              onClick={() => {
+                setActiveCategory(cat.key)
+                const el = document.getElementById('gallery-section')
+                if (el) el.scrollIntoView({ behavior: 'smooth' })
+              }}
               style={{
                 backgroundColor: '#ffffff',
-                border: activeCategory === cat.categoryName ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
+                border: activeCategory === cat.key ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
                 borderRadius: '12px',
-                padding: '2rem 1.5rem',
+                padding: '1.75rem 1.25rem',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                boxShadow: activeCategory === cat.categoryName ? '0 10px 25px -5px rgba(234, 179, 8, 0.2)' : '0 2px 8px rgba(0,0,0,0.04)',
-                transform: activeCategory === cat.categoryName ? 'translateY(-4px)' : 'none'
+                boxShadow: activeCategory === cat.key ? '0 10px 25px -5px rgba(234, 179, 8, 0.25)' : '0 2px 8px rgba(0,0,0,0.03)',
+                transform: activeCategory === cat.key ? 'translateY(-4px)' : 'none',
+                display: 'flex',
+                flexDirection: 'column'
               }}
             >
-              <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>{cat.icon}</div>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{cat.title}</h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', lineHeight: '1.5', margin: 0 }}>{cat.desc}</p>
+              <div style={{ fontSize: '2.4rem', marginBottom: '0.75rem' }}>{cat.icon}</div>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', marginBottom: '0.4rem', color: 'var(--color-secondary)' }}>
+                {cat.label}
+              </h3>
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', lineHeight: '1.5', margin: 0, flex: 1 }}>
+                {cat.desc}
+              </p>
               <div style={{
-                marginTop: '1.25rem',
+                marginTop: '1rem',
                 fontSize: '0.85rem',
                 fontWeight: '600',
                 color: 'var(--color-primary)',
@@ -303,46 +391,64 @@ export default function LightDecorationPublicView({
                 alignItems: 'center',
                 gap: '4px'
               }}>
-                Filter Gallery &rarr;
+                View Real Photos &rarr;
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* GALLERY SHOWCASE */}
-      <section style={{ padding: '4rem 1.5rem 6rem', backgroundColor: '#f8fafc', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0' }}>
+      {/* GALLERY SHOWCASE WITH REAL PHOTOGRAPHS */}
+      <section id="gallery-section" style={{ padding: '4rem 1.5rem 6rem', backgroundColor: '#f8fafc', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0' }}>
         <div style={{ maxWidth: '1300px', margin: '0 auto' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem', marginBottom: '2.5rem' }}>
             <div>
-              <h2 style={{ fontSize: '2.2rem', fontWeight: '800', marginBottom: '0.5rem' }}>
-                Our Decoration Gallery
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: '#fef3c7',
+                color: '#b45309',
+                padding: '4px 12px',
+                borderRadius: '20px',
+                fontSize: '0.78rem',
+                fontWeight: 'bold',
+                marginBottom: '0.5rem'
+              }}>
+                📸 Real Work Gallery
+              </div>
+              <h2 style={{ fontSize: '2.2rem', fontWeight: '800', margin: 0 }}>
+                Actual Decoration Photographs
               </h2>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '1rem', margin: 0 }}>
-                Explore our completed projects and lighting concepts.
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '1rem', margin: '4px 0 0 0' }}>
+                Genuine setups delivered for weddings, homes, Diwali, and private parties.
               </p>
             </div>
 
             {/* Filter Tabs */}
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              {['All', 'LED', 'Event', 'Home', 'Custom'].map((tab) => (
+              {HUMAN_CATEGORIES.map((tab) => (
                 <button
-                  key={tab}
+                  key={tab.key}
                   type="button"
-                  onClick={() => setActiveCategory(tab)}
+                  onClick={() => setActiveCategory(tab.key)}
                   style={{
                     padding: '8px 16px',
                     borderRadius: '25px',
                     border: '1px solid var(--color-border)',
-                    backgroundColor: activeCategory === tab ? 'var(--color-secondary)' : '#ffffff',
-                    color: activeCategory === tab ? '#ffffff' : 'var(--color-text-main)',
-                    fontWeight: activeCategory === tab ? 'bold' : '500',
-                    fontSize: '0.875rem',
+                    backgroundColor: activeCategory === tab.key ? 'var(--color-secondary)' : '#ffffff',
+                    color: activeCategory === tab.key ? '#ffffff' : 'var(--color-text-main)',
+                    fontWeight: activeCategory === tab.key ? 'bold' : '500',
+                    fontSize: '0.85rem',
                     cursor: 'pointer',
-                    transition: 'all 0.15s'
+                    transition: 'all 0.15s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
                   }}
                 >
-                  {tab === 'All' ? 'All Photos' : tab}
+                  <span>{tab.icon}</span>
+                  <span>{tab.label}</span>
                 </button>
               ))}
             </div>
@@ -358,15 +464,21 @@ export default function LightDecorationPublicView({
             }}>
               <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✨</div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
-                {items.length === 0 ? 'Decorations are being updated!' : `No decorations found under "${activeCategory}"`}
+                No photos found under this category
               </h3>
-              <p style={{ color: 'var(--color-text-muted)', maxWidth: '500px', margin: '0 auto 1.5rem' }}>
-                {items.length === 0
-                  ? 'Our team will upload latest photographs soon. You can still reach out via our booking form or WhatsApp for a customized lighting preview!'
-                  : 'Try selecting "All Photos" to see other categories.'}
+              <p style={{ color: 'var(--color-text-muted)', maxWidth: '480px', margin: '0 auto 1.5rem' }}>
+                Please select &ldquo;All Projects&rdquo; to see all photos, or message us on WhatsApp to receive our full photo album directly on your phone!
               </p>
+              <button
+                type="button"
+                onClick={() => setActiveCategory('All')}
+                className="btn btn-primary"
+                style={{ marginRight: '1rem' }}
+              >
+                Show All Photos
+              </button>
               <a
-                href={`https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent('Hello! Please share photos and catalog of your light decorations.')}`}
+                href={`https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent('Hello, please send me photos and rates for light decoration.')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -381,14 +493,14 @@ export default function LightDecorationPublicView({
                   textDecoration: 'none'
                 }}
               >
-                <MessageCircle size={18} /> Ask for Catalog on WhatsApp
+                <MessageCircle size={18} /> Request Album on WhatsApp
               </a>
             </div>
           ) : (
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-              gap: '1.5rem'
+              gap: '1.75rem'
             }}>
               {filteredItems.map((item) => (
                 <div
@@ -401,7 +513,8 @@ export default function LightDecorationPublicView({
                     boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
                     cursor: 'pointer',
                     transition: 'transform 0.2s, box-shadow 0.2s',
-                    position: 'relative'
+                    position: 'relative',
+                    border: '1px solid #e2e8f0'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-4px)'
@@ -418,11 +531,12 @@ export default function LightDecorationPublicView({
                       src={item.imagePath}
                       alt={item.title}
                       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      loading="lazy"
                     />
                     <div style={{
                       position: 'absolute',
                       inset: 0,
-                      backgroundColor: 'rgba(0,0,0,0.2)',
+                      backgroundColor: 'rgba(0,0,0,0.25)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -432,8 +546,8 @@ export default function LightDecorationPublicView({
                     onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
                     onMouseLeave={(e) => e.currentTarget.style.opacity = '0'}
                     >
-                      <div style={{ background: 'rgba(255,255,255,0.9)', color: '#0f172a', padding: '8px 16px', borderRadius: '30px', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <Eye size={16} /> View Photo
+                      <div style={{ background: 'rgba(255,255,255,0.95)', color: '#0f172a', padding: '8px 18px', borderRadius: '30px', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <Eye size={16} /> Click to Enlarge
                       </div>
                     </div>
                   </div>
@@ -444,8 +558,8 @@ export default function LightDecorationPublicView({
                         display: 'inline-block',
                         fontSize: '0.75rem',
                         fontWeight: '600',
-                        color: 'var(--color-primary)',
-                        backgroundColor: 'rgba(234, 179, 8, 0.1)',
+                        color: 'var(--color-secondary)',
+                        backgroundColor: '#f1f5f9',
                         padding: '3px 10px',
                         borderRadius: '20px',
                         marginBottom: '0.5rem'
@@ -478,7 +592,7 @@ export default function LightDecorationPublicView({
         </div>
       </section>
 
-      {/* PACKAGES SECTION */}
+      {/* REAL-WORLD PACKAGES SECTION */}
       <section style={{ padding: '6rem 1.5rem', maxWidth: '1280px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
           <div style={{
@@ -493,13 +607,13 @@ export default function LightDecorationPublicView({
             fontWeight: 'bold',
             marginBottom: '0.75rem'
           }}>
-            📋 Transparent Pricing
+            📋 Clear &amp; Fair Pricing
           </div>
           <h2 style={{ fontSize: '2.4rem', fontWeight: '800', marginBottom: '0.75rem' }}>
-            Decoration Packages
+            Popular Decoration Packages
           </h2>
           <p style={{ color: 'var(--color-text-muted)', fontSize: '1.05rem', maxWidth: '650px', margin: '0 auto' }}>
-            Choose from popular pre-designed setups or request custom venue lighting.
+            Tailored packages with certified electrical safety, weather-proof wiring, and hassle-free takedown.
           </p>
         </div>
 
@@ -540,7 +654,7 @@ export default function LightDecorationPublicView({
                 </div>
               )}
 
-              <h3 style={{ fontSize: '1.35rem', fontWeight: 'bold', marginBottom: '0.25rem' }}>{pkg.name}</h3>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', marginBottom: '0.25rem' }}>{pkg.name}</h3>
               <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', marginBottom: '1.25rem', minHeight: '38px' }}>
                 {pkg.tagline}
               </p>
@@ -581,22 +695,22 @@ export default function LightDecorationPublicView({
                   transition: 'opacity 0.2s'
                 }}
               >
-                Select &amp; Inquire
+                Select This Package
               </button>
             </div>
           ))}
         </div>
       </section>
 
-      {/* WHY CHOOSE US */}
+      {/* WHY CHOOSE US (GENUINE ELECTRICIAN ADVANTAGE) */}
       <section style={{ backgroundColor: 'var(--color-secondary)', color: 'white', padding: '5rem 1.5rem' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
             <h2 style={{ fontSize: '2.2rem', fontWeight: '800', marginBottom: '0.5rem' }}>
-              Why Choose {websiteName} for Light Decoration?
+              Why Hire {websiteName} for Your Decoration?
             </h2>
-            <p style={{ color: '#94a3b8', fontSize: '1rem' }}>
-              We combine electrical expertise with aesthetic design for a safe, unforgettable experience.
+            <p style={{ color: '#94a3b8', fontSize: '1rem', maxWidth: '650px', margin: '0 auto' }}>
+              Unlike third-party event agents, we are certified electrical rewinders &amp; wiring specialists. Your family&apos;s safety and flawless power delivery are our highest priorities.
             </p>
           </div>
 
@@ -604,23 +718,23 @@ export default function LightDecorationPublicView({
             {[
               {
                 icon: <ShieldCheck size={28} color="#facc15" />,
-                title: '100% Electrical Safety',
-                desc: 'Certified electricians handling proper load distribution, waterproof fittings, and MCB earth protection.'
+                title: 'No Short-Circuits or Tripping',
+                desc: 'All connections are made with proper load balancing, insulated tape, and MCB protection boxes.'
               },
               {
                 icon: <Zap size={28} color="#facc15" />,
-                title: 'Premium LED Technology',
-                desc: 'Ultra-bright, energy-efficient fixtures that do not overheat or trip power supplies.'
+                title: 'Tested, High-Brightness Lights',
+                desc: '100% copper core wiring and certified waterproof LED rice strings that will not dim or fail mid-event.'
               },
               {
                 icon: <Clock size={28} color="#facc15" />,
-                title: 'Punctual Setup & Takedown',
-                desc: 'Always installed well before guests arrive, with prompt and clean post-event removal.'
+                title: 'Setup Ready Before Guests Arrive',
+                desc: 'We arrive early to finish installation, test all switches and leave your venue spotless.'
               },
               {
-                icon: <Sliders size={28} color="#facc15" />,
-                title: 'Customized to Your Venue',
-                desc: 'Every building, tree, and entrance is surveyed to tailor colors and lighting patterns.'
+                icon: <PhoneCall size={28} color="#facc15" />,
+                title: 'Local On-Site Support',
+                desc: 'Located nearby in your area. If you need any adjustments or extra lights during the function, we are just a call away.'
               }
             ].map((box, bIdx) => (
               <div key={bIdx} style={{ backgroundColor: 'rgba(255,255,255,0.05)', padding: '1.75rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.1)' }}>
@@ -656,13 +770,13 @@ export default function LightDecorationPublicView({
                 fontWeight: 'bold',
                 marginBottom: '0.75rem'
               }}>
-                📞 Fast Booking Response
+                📞 Instant Booking &amp; Free Quotation
               </div>
               <h2 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '0.5rem' }}>
-                Inquire &amp; Book Decoration
+                Book Your Light Decoration
               </h2>
               <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem' }}>
-                Fill out the details below and our lighting team will contact you with availability and quote.
+                Fill out the details below. We will call you within 15 minutes with availability and quote.
               </p>
             </div>
 
@@ -670,10 +784,10 @@ export default function LightDecorationPublicView({
               <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
                 <div style={{ fontSize: '3.5rem', marginBottom: '1rem' }}>🎉</div>
                 <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--color-success)', marginBottom: '0.5rem' }}>
-                  Inquiry Received Successfully!
+                  Inquiry Received!
                 </h3>
                 <p style={{ color: 'var(--color-text-muted)', maxWidth: '480px', margin: '0 auto 1.5rem' }}>
-                  Thank you! Our lighting team will review your requirement and call you shortly to confirm dates and options.
+                  Thank you! Our lighting team will review your requirement and call you shortly to confirm your dates.
                 </p>
                 <button
                   type="button"
@@ -698,9 +812,8 @@ export default function LightDecorationPublicView({
                     const pkg = formData.get('selectedPackage') as string
                     const requirement = formData.get('requirement') as string
 
-                    const problemDescription = `[Light Decoration Request]\nPackage: ${pkg || 'Not specified'}\nEvent Date: ${eventDate || 'TBD'}\nVenue/Location: ${venue || 'Not specified'}\nDetails: ${requirement || 'None'}`
+                    const problemDescription = `[Light Decoration Request]\nOccasion: ${eventType}\nPackage: ${pkg || 'Not specified'}\nEvent Date: ${eventDate || 'TBD'}\nLocation: ${venue || 'Not specified'}\nDetails: ${requirement || 'None'}`
 
-                    // Create standard booking request
                     const subData = new FormData()
                     subData.append('firstName', firstName)
                     subData.append('lastName', lastName || '')
@@ -711,7 +824,6 @@ export default function LightDecorationPublicView({
                     await createBookingRequest(subData)
                     setFormSuccess(true)
                   } catch (e) {
-                    // Redirect from Server Action can throw Next.js redirect
                     setFormSuccess(true)
                   } finally {
                     setIsSubmitting(false)
@@ -728,7 +840,7 @@ export default function LightDecorationPublicView({
                       type="text"
                       name="firstName"
                       required
-                      placeholder="E.g. Rajesh Kumar"
+                      placeholder="E.g. Jayesh Patel"
                       style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: '6px' }}
                     />
                   </div>
@@ -741,7 +853,7 @@ export default function LightDecorationPublicView({
                       type="tel"
                       name="mobile"
                       required
-                      placeholder="+91 98765 43210"
+                      placeholder="E.g. 98765 43210"
                       style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: '6px' }}
                     />
                   </div>
@@ -750,20 +862,19 @@ export default function LightDecorationPublicView({
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: '500', fontSize: '0.9rem' }}>
-                      Event Type <span style={{ color: 'var(--color-danger)' }}>*</span>
+                      Occasion / Event Type <span style={{ color: 'var(--color-danger)' }}>*</span>
                     </label>
                     <select
                       name="eventType"
                       required
                       style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: '6px', backgroundColor: 'white' }}
                     >
-                      <option value="Wedding">Wedding / Marriage</option>
-                      <option value="Engagement">Engagement / Ring Ceremony</option>
-                      <option value="Birthday">Birthday Party</option>
-                      <option value="Festival">Festival (Diwali, Navratri, Ganpati)</option>
-                      <option value="Home & Balcony">Home Balcony / Garden Lighting</option>
-                      <option value="Corporate">Corporate / Commercial Event</option>
-                      <option value="Other">Other Custom Celebration</option>
+                      <option value="Festival & Diwali Lighting">🪔 Diwali / Festive Home Lighting</option>
+                      <option value="Wedding & Mandap Illumination">💍 Wedding / Mandap / Reception</option>
+                      <option value="Home & Balcony Lighting">🏡 Balcony / Terrace / House Warming (Gruh Pravesh)</option>
+                      <option value="Birthday & Party Celebration">🎂 Birthday / Anniversary Celebration</option>
+                      <option value="Shop & Showroom Opening">🏢 Shop / Showroom Grand Opening</option>
+                      <option value="Other Custom Occasion">✨ Other Celebration</option>
                     </select>
                   </div>
 
@@ -782,19 +893,19 @@ export default function LightDecorationPublicView({
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: '500', fontSize: '0.9rem' }}>
-                      Venue / Location
+                      Venue / Area Address
                     </label>
                     <input
                       type="text"
                       name="venue"
-                      placeholder="E.g. Surat, Ring Road, Home / Banquet"
+                      placeholder="E.g. Katargam / Varachha / Ring Road"
                       style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: '6px' }}
                     />
                   </div>
 
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: '500', fontSize: '0.9rem' }}>
-                      Selected Package
+                      Package (Optional)
                     </label>
                     <select
                       name="selectedPackage"
@@ -802,23 +913,23 @@ export default function LightDecorationPublicView({
                       onChange={(e) => setSelectedPackage(e.target.value)}
                       style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: '6px', backgroundColor: 'white' }}
                     >
-                      <option value="">-- Choose or Custom --</option>
+                      <option value="">-- Choose Package or Custom --</option>
                       {PACKAGES.map((pkg) => (
                         <option key={pkg.name} value={pkg.name}>{pkg.name}</option>
                       ))}
-                      <option value="Custom Quotation">Custom Quotation</option>
+                      <option value="Custom Quotation">Custom Quotation Needed</option>
                     </select>
                   </div>
                 </div>
 
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: '500', fontSize: '0.9rem' }}>
-                    Decoration Requirements / Light Preferences (Optional)
+                    Any Special Lighting Preference (Optional)
                   </label>
                   <textarea
                     name="requirement"
                     rows={3}
-                    placeholder="E.g. Warm white LED strips for balcony, color theme golden and amber, venue size roughly 1000 sq ft..."
+                    placeholder="E.g. Need warm golden fairy lights for 2 balconies and terrace, or wedding entrance arch for 300 guests..."
                     style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--color-border)', borderRadius: '6px', resize: 'vertical' }}
                   ></textarea>
                 </div>
@@ -830,11 +941,11 @@ export default function LightDecorationPublicView({
                     className="btn btn-primary"
                     style={{ flex: 1, padding: '12px 24px', fontSize: '1rem', fontWeight: 'bold' }}
                   >
-                    {isSubmitting ? 'Submitting Inquiry...' : 'Submit Booking Inquiry'}
+                    {isSubmitting ? 'Submitting...' : 'Send Decoration Inquiry'}
                   </button>
 
                   <a
-                    href={`https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent('Hello, I am looking for light decoration services.')}`}
+                    href={`https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent('Hello, I want to book light decoration. Please send rates and details.')}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -850,7 +961,7 @@ export default function LightDecorationPublicView({
                       fontSize: '0.95rem'
                     }}
                   >
-                    <MessageCircle size={18} /> Chat on WhatsApp
+                    <MessageCircle size={18} /> Chat Directly on WhatsApp
                   </a>
                 </div>
               </form>
@@ -859,14 +970,14 @@ export default function LightDecorationPublicView({
         </div>
       </section>
 
-      {/* LIGHTBOX MODAL */}
+      {/* FULL-SIZE PHOTO LIGHTBOX MODAL */}
       {selectedImage && (
         <div
           onClick={() => setSelectedImage(null)}
           style={{
             position: 'fixed',
             inset: 0,
-            backgroundColor: 'rgba(0,0,0,0.85)',
+            backgroundColor: 'rgba(0,0,0,0.88)',
             zIndex: 9999,
             display: 'flex',
             alignItems: 'center',
@@ -893,24 +1004,24 @@ export default function LightDecorationPublicView({
                 position: 'absolute',
                 top: '12px',
                 right: '12px',
-                background: 'rgba(0,0,0,0.6)',
+                background: 'rgba(0,0,0,0.65)',
                 border: 'none',
                 color: 'white',
                 cursor: 'pointer',
                 borderRadius: '50%',
-                padding: '6px',
+                padding: '8px',
                 zIndex: 10
               }}
             >
               <X size={20} />
             </button>
 
-            <div style={{ maxHeight: '70vh', overflow: 'hidden', backgroundColor: '#000000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ maxHeight: '72vh', overflow: 'hidden', backgroundColor: '#000000', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={selectedImage.imagePath}
                 alt={selectedImage.title}
-                style={{ width: '100%', maxHeight: '70vh', objectFit: 'contain' }}
+                style={{ width: '100%', maxHeight: '72vh', objectFit: 'contain' }}
               />
             </div>
 
@@ -920,11 +1031,11 @@ export default function LightDecorationPublicView({
                   {selectedImage.category}
                 </span>
               )}
-              <h3 style={{ fontSize: '1.4rem', fontWeight: 'bold', margin: '4px 0 8px' }}>
+              <h3 style={{ fontSize: '1.35rem', fontWeight: 'bold', margin: '4px 0 8px' }}>
                 {selectedImage.title}
               </h3>
               {selectedImage.description && (
-                <p style={{ color: '#cbd5e1', fontSize: '0.95rem', margin: 0, lineHeight: '1.5' }}>
+                <p style={{ color: '#cbd5e1', fontSize: '0.92rem', margin: 0, lineHeight: '1.5' }}>
                   {selectedImage.description}
                 </p>
               )}

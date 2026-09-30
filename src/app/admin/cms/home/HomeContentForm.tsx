@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { updateHomeContent } from '@/app/actions/cms'
+import ImageInputWithPreview from '@/components/admin/ImageInputWithPreview'
 
 export default function HomeContentForm({ initialData }: { initialData: any }) {
   const [loading, setLoading] = useState(false)
@@ -47,7 +48,7 @@ export default function HomeContentForm({ initialData }: { initialData: any }) {
           <textarea name="heroDescription" defaultValue={initialData?.heroDescription} style={{ ...inputStyle, minHeight: '100px' }} required />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label style={{ fontWeight: '500' }}>Button Text</label>
             <input name="heroButtonText" defaultValue={initialData?.heroButtonText} style={inputStyle} required />
@@ -56,11 +57,14 @@ export default function HomeContentForm({ initialData }: { initialData: any }) {
             <label style={{ fontWeight: '500' }}>Button Link</label>
             <input name="heroButtonLink" defaultValue={initialData?.heroButtonLink} style={inputStyle} required />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label style={{ fontWeight: '500' }}>Background Image Path</label>
-            <input name="heroBackgroundImage" defaultValue={initialData?.heroBackgroundImage || ''} style={inputStyle} />
-          </div>
         </div>
+
+        <ImageInputWithPreview
+          name="heroBackgroundImage"
+          defaultValue={initialData?.heroBackgroundImage || ''}
+          label="Hero Background Image"
+          placeholder="Paste Chrome image URL or upload photo from device"
+        />
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <label style={{ fontWeight: '500' }}>Why Choose Us Points (Comma Separated or JSON)</label>

@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma'
 import { listSeoModules } from '@/lib/cms/registry'
 import { updatePageSeo } from '@/app/actions/cms'
+import ImageInputWithPreview from '@/components/admin/ImageInputWithPreview'
 
 /**
  * SEO CONNECTION
@@ -75,10 +76,12 @@ export default async function SeoAdminPage() {
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>OG Description</label>
                   <textarea name="ogDescription" defaultValue={seo.ogDescription || ''} rows={2} style={{ ...fieldStyle, resize: 'vertical' }} placeholder="Defaults to SEO Description"></textarea>
                 </div>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>OG Image</label>
-                  <input type="text" name="ogImage" defaultValue={seo.ogImage || ''} style={fieldStyle} placeholder="/images/og/home.jpg or https://..." />
-                </div>
+                <ImageInputWithPreview
+                  name="ogImage"
+                  defaultValue={seo.ogImage || ''}
+                  label="OG Social Share Image"
+                  placeholder="Paste Chrome image URL or upload photo"
+                />
 
                 <button type="submit" className="btn btn-primary" style={{ width: 'fit-content' }}>
                   Save SEO

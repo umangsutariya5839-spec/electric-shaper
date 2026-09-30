@@ -11,10 +11,11 @@ import { Trash2, Plus, Edit2, X, Save, Sparkles, ExternalLink, Star } from 'luci
 import ImageInputWithPreview from '@/components/admin/ImageInputWithPreview'
 
 const CATEGORY_PRESETS = [
-  '💡 LED Light Decoration',
-  '🎉 Event Decoration',
-  '🏠 Home & Outdoor Decoration',
-  '✨ Custom Decoration'
+  '🪔 Festival & Diwali Lighting',
+  '💍 Wedding & Mandap Illumination',
+  '🏡 Home & Balcony Lighting',
+  '🎂 Birthday & Party Celebration',
+  '🏢 Shop & Showroom Opening'
 ]
 
 export default function LightDecorationClient({ initialItems }: { initialItems: any[] }) {

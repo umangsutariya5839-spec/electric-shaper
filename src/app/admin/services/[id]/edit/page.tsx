@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import prisma from '@/lib/prisma'
 import { notFound } from 'next/navigation'
+import ImageInputWithPreview from '@/components/admin/ImageInputWithPreview'
 
 export default async function EditServicePage({ params }: { params: { id: string } }) {
   const service = await prisma.serviceItem.findUnique({
@@ -43,11 +44,13 @@ export default async function EditServicePage({ params }: { params: { id: string
             <textarea name="fullDescription" defaultValue={service.fullDescription || ''} rows={6} style={inputStyle} placeholder="Detailed description of the service..."></textarea>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label style={{ fontWeight: '500' }}>Image Path</label>
-            <input type="text" name="imagePath" defaultValue={service.imagePath} style={inputStyle} placeholder="e.g. /hero.png or /pump.png" required />
-            <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>For now, use /hero.png, /pump.png, or /panel.png.</span>
-          </div>
+          <ImageInputWithPreview
+            name="imagePath"
+            defaultValue={service.imagePath}
+            required={true}
+            label="Service Image"
+            placeholder="Paste Chrome image URL or upload photo from device"
+          />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             <label style={{ fontWeight: '500' }}>Display Order</label>
@@ -86,4 +89,3 @@ const inputStyle = {
   fontFamily: 'inherit',
   width: '100%'
 }
-

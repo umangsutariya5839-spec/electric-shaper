@@ -3,6 +3,8 @@ import prisma from '@/lib/prisma'
 import Link from 'next/link'
 import { buildModuleMetadata } from '@/lib/cms/seo'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata() {
   return buildModuleMetadata('contact', {
     title: 'Contact Us',

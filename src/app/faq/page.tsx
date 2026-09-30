@@ -3,6 +3,8 @@ import FAQClientPage from './FAQClientPage'
 import PublicHeader from '@/components/layout/PublicHeader'
 import { buildModuleMetadata } from '@/lib/cms/seo'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata() {
   return buildModuleMetadata('faq', {
     title: 'Frequently Asked Questions',

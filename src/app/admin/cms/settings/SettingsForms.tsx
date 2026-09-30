@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { updateSiteSettings, updateContactInfo } from '@/app/actions/cms'
+import ImageInputWithPreview from '@/components/admin/ImageInputWithPreview'
 
 export function SiteSettingsForm({ initialData }: { initialData: any }) {
   const [loading, setLoading] = useState(false)
@@ -47,14 +48,18 @@ export function SiteSettingsForm({ initialData }: { initialData: any }) {
             <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: '500' }}>Website Name</label>
             <input type="text" name="websiteName" defaultValue={initialData?.websiteName || ''} style={inputStyle} required />
           </div>
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: '500' }}>Logo Path</label>
-            <input type="text" name="logoPath" defaultValue={initialData?.logoPath || ''} style={inputStyle} placeholder="/logo.png" />
-          </div>
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: '500' }}>Favicon Path</label>
-            <input type="text" name="faviconPath" defaultValue={initialData?.faviconPath || ''} style={inputStyle} placeholder="/favicon.ico" />
-          </div>
+          <ImageInputWithPreview
+            name="logoPath"
+            defaultValue={initialData?.logoPath || ''}
+            label="Logo Image"
+            placeholder="Paste Chrome logo URL or upload file"
+          />
+          <ImageInputWithPreview
+            name="faviconPath"
+            defaultValue={initialData?.faviconPath || ''}
+            label="Favicon / Icon"
+            placeholder="Paste Chrome favicon URL or upload file"
+          />
         </div>
 
         <div>

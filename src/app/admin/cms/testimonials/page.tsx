@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma'
 import { createTestimonial, updateTestimonial, deleteTestimonial } from '@/app/actions/cms'
 import { Trash2, Plus, Star } from 'lucide-react'
+import ImageInputWithPreview from '@/components/admin/ImageInputWithPreview'
 
 export default async function TestimonialsAdminPage() {
   const testimonials = await prisma.testimonial.findMany({
@@ -55,15 +56,11 @@ export default async function TestimonialsAdminPage() {
                 placeholder="E.g. John Doe"
               />
             </div>
-            <div>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Customer Image URL</label>
-              <input 
-                type="text" 
-                name="customerImage" 
-                style={{ width: '100%', padding: '8px', border: '1px solid var(--color-border)', borderRadius: '4px' }}
-                placeholder="E.g. /path/to/image.jpg (Optional)"
-              />
-            </div>
+            <ImageInputWithPreview
+              name="customerImage"
+              label="Customer Photo (Optional)"
+              placeholder="Paste Chrome image URL or upload photo"
+            />
             <div>
               <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Rating (1-5)</label>
               <input 
@@ -178,10 +175,12 @@ export default async function TestimonialsAdminPage() {
                         <label style={{ fontSize: '0.875rem', fontWeight: '500' }}>Customer Name</label>
                         <input type="text" name="customerName" defaultValue={testimonial.customerName} required style={editInputStyle} />
                       </div>
-                      <div>
-                        <label style={{ fontSize: '0.875rem', fontWeight: '500' }}>Customer Image URL</label>
-                        <input type="text" name="customerImage" defaultValue={testimonial.customerImage || ''} style={editInputStyle} />
-                      </div>
+                      <ImageInputWithPreview
+                        name="customerImage"
+                        defaultValue={testimonial.customerImage || ''}
+                        label="Customer Photo (Optional)"
+                        placeholder="Paste Chrome image URL or upload photo"
+                      />
                       <div>
                         <label style={{ fontSize: '0.875rem', fontWeight: '500' }}>Rating (1-5)</label>
                         <input type="number" name="rating" min="1" max="5" defaultValue={testimonial.rating} required style={editInputStyle} />

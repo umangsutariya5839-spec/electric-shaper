@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { updateAboutContent } from '@/app/actions/cms'
+import ImageInputWithPreview from '@/components/admin/ImageInputWithPreview'
 
 export default function AboutContentForm({ initialData }: { initialData: any }) {
   const [loading, setLoading] = useState(false)
@@ -44,10 +45,12 @@ export default function AboutContentForm({ initialData }: { initialData: any }) 
           <textarea name="aboutDescription" defaultValue={initialData?.aboutDescription} style={{ ...inputStyle, minHeight: '100px' }} required />
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <label style={{ fontWeight: '500' }}>Company Image Path</label>
-          <input name="companyImage" defaultValue={initialData?.companyImage || ''} style={inputStyle} />
-        </div>
+        <ImageInputWithPreview
+          name="companyImage"
+          defaultValue={initialData?.companyImage || ''}
+          label="Company Image"
+          placeholder="Paste Chrome image URL or upload photo from device"
+        />
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
