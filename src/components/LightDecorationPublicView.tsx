@@ -38,39 +38,39 @@ interface PublicViewProps {
 const REAL_DECORATION_GALLERY: LightDecorationItem[] = [
   {
     id: 'real-1',
-    title: 'Diwali Home Exterior & Balcony Fairy Lights',
+    title: 'Diwali Home Exterior & Balcony Festive Lighting',
     category: '🪔 Festival & Diwali Lighting',
     description: 'Cascading golden rice light curtains draped along multi-floor balconies, terrace borders, and front entrance illumination for festive celebrations.',
-    imagePath: 'https://images.unsplash.com/photo-1514517521153-1be72277b32f?w=1000&auto=format&fit=crop&q=80',
+    imagePath: 'https://images.unsplash.com/photo-1574873215043-44119461cb3b?w=1000&auto=format&fit=crop&q=80',
     isActive: true,
     isFeatured: true,
     order: 1
   },
   {
     id: 'real-2',
-    title: 'Royal Wedding Mandap & Lawn Fairy Canopy',
-    category: '💍 Wedding & Mandap Illumination',
-    description: 'Overhead warm fairy light canopy covering the entire wedding lawn, floral mandap spotlights, and ambient lighting for photography.',
-    imagePath: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1000&auto=format&fit=crop&q=80',
+    title: 'Festive Balcony & Window Serial Rice Lights',
+    category: '🪔 Festival & Diwali Lighting',
+    description: 'Festive golden serial lights and fairy jhalar cascading gracefully down balcony railings with safe waterproof outdoor junction points.',
+    imagePath: 'https://images.unsplash.com/photo-1514517521153-1be72277b32f?w=1000&auto=format&fit=crop&q=80',
     isActive: true,
-    isFeatured: true,
+    isFeatured: false,
     order: 2
   },
   {
     id: 'real-3',
-    title: 'Terrace Garden & Rooftop Party Lighting',
-    category: '🏡 Home & Balcony Lighting',
-    description: 'Vintage warm Edison hanging bulbs strung across terrace railings and pergola with relaxing evening party ambiance.',
-    imagePath: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1000&auto=format&fit=crop&q=80',
+    title: 'Royal Wedding Mandap & Lawn Fairy Canopy',
+    category: '💍 Wedding & Mandap Illumination',
+    description: 'Overhead warm fairy light canopy covering the entire wedding lawn with mandap spotlights and ambient photography glow.',
+    imagePath: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1000&auto=format&fit=crop&q=80',
     isActive: true,
     isFeatured: true,
     order: 3
   },
   {
     id: 'real-4',
-    title: 'Wedding Reception Walkway Light Tunnel',
+    title: 'Grand Wedding Entrance Walkway Light Tunnel',
     category: '💍 Wedding & Mandap Illumination',
-    description: 'Grand curved archway light tunnel decorated with dense warm LED fairy strings welcoming guests to the celebration banquet.',
+    description: 'Curved archway light tunnel decorated with dense warm LED fairy strings welcoming guests to the celebration banquet.',
     imagePath: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=1000&auto=format&fit=crop&q=80',
     isActive: true,
     isFeatured: true,
@@ -78,23 +78,43 @@ const REAL_DECORATION_GALLERY: LightDecorationItem[] = [
   },
   {
     id: 'real-5',
-    title: 'Birthday & Family Party Fairy Backdrop',
-    category: '🎂 Birthday & Party Celebration',
-    description: 'Fairy light curtain backdrop with warm pendant globe lights, stage focus spots, and cheerful indoor room ambiance.',
-    imagePath: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1000&auto=format&fit=crop&q=80',
+    title: 'Terrace Garden & Rooftop Party Hanging Bulbs',
+    category: '🏡 Home & Balcony Lighting',
+    description: 'Vintage warm Edison hanging bulbs strung across terrace railings and pergola creating an intimate evening lounge ambiance.',
+    imagePath: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1000&auto=format&fit=crop&q=80',
     isActive: true,
     isFeatured: true,
     order: 5
   },
   {
     id: 'real-6',
-    title: 'Outdoor Garden & Tree Fairy Wrap Lighting',
+    title: 'Outdoor Garden & Tree Trunk Fairy Wrapping',
     category: '🏡 Home & Balcony Lighting',
     description: 'Dense tree trunk and branch wrapping using weatherproof micro-LED strings creating an enchanting illuminated landscape.',
     imagePath: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1000&auto=format&fit=crop&q=80',
     isActive: true,
-    isFeatured: true,
+    isFeatured: false,
     order: 6
+  },
+  {
+    id: 'real-7',
+    title: 'Birthday & Family Celebration Fairy Backdrop',
+    category: '🎂 Birthday & Party Celebration',
+    description: 'Fairy light curtain backdrop with colorful party celebration ambiance and warm room illumination.',
+    imagePath: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1000&auto=format&fit=crop&q=80',
+    isActive: true,
+    isFeatured: true,
+    order: 7
+  },
+  {
+    id: 'real-8',
+    title: 'Commercial Showroom & Building Opening Illumination',
+    category: '🏢 Shop & Showroom Opening',
+    description: 'Full building exterior serial light borders, illuminated storefront facade, and entrance spotlighting for commercial inaugurations.',
+    imagePath: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1000&auto=format&fit=crop&q=80',
+    isActive: true,
+    isFeatured: true,
+    order: 8
   }
 ]
 
@@ -104,6 +124,7 @@ const HUMAN_CATEGORIES = [
     label: 'All Projects',
     icon: '✨',
     badge: 'All Work',
+    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop&q=80',
     desc: 'Browse our complete collection of real home, wedding, and festival lighting work.'
   },
   {
@@ -111,6 +132,7 @@ const HUMAN_CATEGORIES = [
     label: 'Diwali & Festivals',
     icon: '🪔',
     badge: 'Festival & Diwali',
+    image: 'https://images.unsplash.com/photo-1574873215043-44119461cb3b?w=800&auto=format&fit=crop&q=80',
     desc: 'Exterior house jhalar, serial rice lights, balcony drops, and colorful floodlights.'
   },
   {
@@ -118,6 +140,7 @@ const HUMAN_CATEGORIES = [
     label: 'Wedding & Mandap',
     icon: '💍',
     badge: 'Wedding & Mandap',
+    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop&q=80',
     desc: 'Grand fairy light canopies over lawns, mandap backdrops, and entrance arch tunnels.'
   },
   {
@@ -125,6 +148,7 @@ const HUMAN_CATEGORIES = [
     label: 'Home & Balcony',
     icon: '🏡',
     badge: 'Home & Balcony',
+    image: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800&auto=format&fit=crop&q=80',
     desc: 'Warm hanging balcony strings, terrace party lights, and garden tree wrapping.'
   },
   {
@@ -132,6 +156,7 @@ const HUMAN_CATEGORIES = [
     label: 'Birthday & Parties',
     icon: '🎂',
     badge: 'Birthday & Party',
+    image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&auto=format&fit=crop&q=80',
     desc: 'Photo-booth fairy curtains, warm Edison bulb drops, and indoor celebration ambiance.'
   },
   {
@@ -139,6 +164,7 @@ const HUMAN_CATEGORIES = [
     label: 'Shop & Showroom',
     icon: '🏢',
     badge: 'Shop & Opening',
+    image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80',
     desc: 'Grand opening building serial borders, entrance focus lights, and facade decoration.'
   }
 ]
@@ -220,6 +246,22 @@ export default function LightDecorationPublicView({
     const cat = (item.category || '').toLowerCase()
     const title = (item.title || '').toLowerCase()
     const target = activeCategory.toLowerCase()
+
+    if (target === 'festival' || target === 'diwali') {
+      return cat.includes('festival') || cat.includes('diwali') || title.includes('festival') || title.includes('diwali')
+    }
+    if (target === 'wedding' || target === 'mandap') {
+      return cat.includes('wedding') || cat.includes('mandap') || title.includes('wedding') || title.includes('mandap')
+    }
+    if (target === 'home' || target === 'balcony') {
+      return cat.includes('home') || cat.includes('balcony') || title.includes('home') || title.includes('balcony') || cat.includes('terrace')
+    }
+    if (target === 'birthday' || target === 'party') {
+      return cat.includes('birthday') || cat.includes('party') || title.includes('birthday') || title.includes('party')
+    }
+    if (target === 'shop' || target === 'showroom') {
+      return cat.includes('shop') || cat.includes('showroom') || title.includes('shop') || title.includes('showroom') || cat.includes('opening')
+    }
     return cat.includes(target) || title.includes(target)
   })
 
@@ -338,9 +380,23 @@ export default function LightDecorationPublicView({
         </div>
       </section>
 
-      {/* REAL HUMAN CATEGORIES GRID */}
+      {/* REAL HUMAN CATEGORIES GRID WITH LIVE PICTURES */}
       <section style={{ padding: '5rem 1.5rem', maxWidth: '1280px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            background: '#fef3c7',
+            color: '#b45309',
+            padding: '4px 14px',
+            borderRadius: '20px',
+            fontSize: '0.8rem',
+            fontWeight: 'bold',
+            marginBottom: '0.75rem'
+          }}>
+            🌟 Real Work by Occasion
+          </div>
           <h2 style={{ fontSize: '2.2rem', fontWeight: '800', marginBottom: '0.75rem' }}>
             Decoration Services by Occasion
           </h2>
@@ -351,8 +407,8 @@ export default function LightDecorationPublicView({
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-          gap: '1.25rem'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '1.5rem'
         }}>
           {HUMAN_CATEGORIES.filter(c => c.key !== 'All').map((cat) => (
             <div
@@ -365,33 +421,111 @@ export default function LightDecorationPublicView({
               style={{
                 backgroundColor: '#ffffff',
                 border: activeCategory === cat.key ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
-                borderRadius: '12px',
-                padding: '1.75rem 1.25rem',
+                borderRadius: '14px',
+                overflow: 'hidden',
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: activeCategory === cat.key ? '0 10px 25px -5px rgba(234, 179, 8, 0.25)' : '0 2px 8px rgba(0,0,0,0.03)',
+                transition: 'all 0.25s ease',
+                boxShadow: activeCategory === cat.key ? '0 12px 28px -5px rgba(234, 179, 8, 0.3)' : '0 4px 14px rgba(0,0,0,0.05)',
                 transform: activeCategory === cat.key ? 'translateY(-4px)' : 'none',
                 display: 'flex',
                 flexDirection: 'column'
               }}
             >
-              <div style={{ fontSize: '2.4rem', marginBottom: '0.75rem' }}>{cat.icon}</div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', marginBottom: '0.4rem', color: 'var(--color-secondary)' }}>
-                {cat.label}
-              </h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', lineHeight: '1.5', margin: 0, flex: 1 }}>
-                {cat.desc}
-              </p>
-              <div style={{
-                marginTop: '1rem',
-                fontSize: '0.85rem',
-                fontWeight: '600',
-                color: 'var(--color-primary)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px'
-              }}>
-                View Real Photos &rarr;
+              {/* Real Live Photo Header */}
+              <div
+                style={{ position: 'relative', width: '100%', height: '180px', overflow: 'hidden', backgroundColor: '#0f172a' }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setSelectedImage({
+                    id: `cat-${cat.key}`,
+                    title: cat.label,
+                    description: cat.desc,
+                    category: cat.badge,
+                    imagePath: cat.image,
+                    isActive: true,
+                    isFeatured: true,
+                    order: 0
+                  })
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={cat.image}
+                  alt={cat.label}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    transition: 'transform 0.4s ease'
+                  }}
+                  loading="lazy"
+                />
+                <div style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(to top, rgba(15,23,42,0.8) 0%, rgba(15,23,42,0.15) 60%, transparent 100%)'
+                }} />
+                {/* Category Badge on Photo */}
+                <div style={{
+                  position: 'absolute',
+                  top: '12px',
+                  left: '12px',
+                  backgroundColor: 'rgba(15, 23, 42, 0.8)',
+                  backdropFilter: 'blur(6px)',
+                  color: '#facc15',
+                  border: '1px solid rgba(250, 204, 21, 0.35)',
+                  padding: '4px 10px',
+                  borderRadius: '20px',
+                  fontSize: '0.75rem',
+                  fontWeight: 'bold',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}>
+                  <span>{cat.icon}</span>
+                  <span>{cat.badge}</span>
+                </div>
+                {/* Live Real Photo Tag */}
+                <div style={{
+                  position: 'absolute',
+                  bottom: '10px',
+                  right: '12px',
+                  backgroundColor: 'rgba(0,0,0,0.65)',
+                  backdropFilter: 'blur(4px)',
+                  color: '#ffffff',
+                  padding: '3px 8px',
+                  borderRadius: '12px',
+                  fontSize: '0.7rem',
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}>
+                  <span>📸 Real Live Photo</span>
+                </div>
+              </div>
+
+              {/* Card Body */}
+              <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', marginBottom: '0.4rem', color: 'var(--color-secondary)' }}>
+                  {cat.label}
+                </h3>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', lineHeight: '1.5', margin: 0, flex: 1 }}>
+                  {cat.desc}
+                </p>
+                <div style={{
+                  marginTop: '1.25rem',
+                  paddingTop: '0.75rem',
+                  borderTop: '1px solid #f1f5f9',
+                  fontSize: '0.85rem',
+                  fontWeight: '700',
+                  color: 'var(--color-primary)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}>
+                  View Real Photos &rarr;
+                </div>
               </div>
             </div>
           ))}

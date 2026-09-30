@@ -276,56 +276,74 @@ export async function seedSampleLightDecorations() {
   await requireSuperAdmin()
   const samples = [
     {
-      title: 'Diwali & Festival Home Exterior Lighting',
+      title: 'Diwali Home Exterior & Balcony Festive Lighting',
       category: '🪔 Festival & Diwali Lighting',
-      description: 'Exterior fairy light curtains cascading down residential balconies, terrace border jhalar, and festive entrance lighting with safe outdoor wiring.',
-      imagePath: 'https://images.unsplash.com/photo-1514517521153-1be72277b32f?w=1000&auto=format&fit=crop&q=80',
+      description: 'Cascading golden rice light curtains draped along multi-floor balconies, terrace borders, and front entrance illumination for festive celebrations.',
+      imagePath: 'https://images.unsplash.com/photo-1574873215043-44119461cb3b?w=1000&auto=format&fit=crop&q=80',
       order: 1,
       isActive: true,
       isFeatured: true
     },
     {
-      title: 'Royal Wedding Lawn Canopy & Mandap Lighting',
-      category: '💍 Wedding & Mandap Illumination',
-      description: 'Overhead warm fairy light ceiling canopy over wedding lawn, mandap spotlights, and floral backdrop warm glow.',
-      imagePath: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1000&auto=format&fit=crop&q=80',
+      title: 'Festive Balcony & Window Serial Rice Lights',
+      category: '🪔 Festival & Diwali Lighting',
+      description: 'Festive golden serial lights and fairy jhalar cascading gracefully down balcony railings with safe waterproof outdoor junction points.',
+      imagePath: 'https://images.unsplash.com/photo-1514517521153-1be72277b32f?w=1000&auto=format&fit=crop&q=80',
       order: 2,
       isActive: true,
-      isFeatured: true
+      isFeatured: false
     },
     {
-      title: 'Terrace Garden & Rooftop Party Lighting',
-      category: '🏡 Home & Balcony Lighting',
-      description: 'Waterproof warm white hanging filament bulbs across terrace railings with cozy evening seating ambiance.',
-      imagePath: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1000&auto=format&fit=crop&q=80',
+      title: 'Royal Wedding Mandap & Lawn Fairy Canopy',
+      category: '💍 Wedding & Mandap Illumination',
+      description: 'Overhead warm fairy light canopy covering the entire wedding lawn with mandap spotlights and ambient photography glow.',
+      imagePath: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1000&auto=format&fit=crop&q=80',
       order: 3,
       isActive: true,
       isFeatured: true
     },
     {
-      title: 'Wedding Grand Entrance Light Tunnel',
+      title: 'Grand Wedding Entrance Walkway Light Tunnel',
       category: '💍 Wedding & Mandap Illumination',
-      description: 'Arched walkway covered with thousands of golden rice lights welcoming guests into the venue.',
+      description: 'Curved archway light tunnel decorated with dense warm LED fairy strings welcoming guests to the celebration banquet.',
       imagePath: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=1000&auto=format&fit=crop&q=80',
       order: 4,
       isActive: true,
       isFeatured: true
     },
     {
-      title: 'Birthday & Family Celebration Fairy Backdrop',
-      category: '🎂 Birthday & Party Celebration',
-      description: 'Fairy light photo backdrop with warm globe bulbs, stage spots, and festive room illumination.',
-      imagePath: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1000&auto=format&fit=crop&q=80',
+      title: 'Terrace Garden & Rooftop Party Hanging Bulbs',
+      category: '🏡 Home & Balcony Lighting',
+      description: 'Vintage warm Edison hanging bulbs strung across terrace railings and pergola creating an intimate evening lounge ambiance.',
+      imagePath: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1000&auto=format&fit=crop&q=80',
       order: 5,
       isActive: true,
       isFeatured: true
     },
     {
-      title: 'Night Garden & Tree Trunk Fairy Wrapping',
+      title: 'Outdoor Garden & Tree Trunk Fairy Wrapping',
       category: '🏡 Home & Balcony Lighting',
-      description: 'Detailed trunk and branch tree wrapping with weatherproof micro LEDs creating a magical night landscape.',
+      description: 'Dense tree trunk and branch wrapping using weatherproof micro-LED strings creating an enchanting illuminated landscape.',
       imagePath: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1000&auto=format&fit=crop&q=80',
       order: 6,
+      isActive: true,
+      isFeatured: false
+    },
+    {
+      title: 'Birthday & Family Celebration Fairy Backdrop',
+      category: '🎂 Birthday & Party Celebration',
+      description: 'Fairy light curtain backdrop with colorful party celebration ambiance and warm room illumination.',
+      imagePath: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1000&auto=format&fit=crop&q=80',
+      order: 7,
+      isActive: true,
+      isFeatured: true
+    },
+    {
+      title: 'Commercial Showroom & Building Opening Illumination',
+      category: '🏢 Shop & Showroom Opening',
+      description: 'Full building exterior serial light borders, illuminated storefront facade, and entrance spotlighting for commercial inaugurations.',
+      imagePath: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1000&auto=format&fit=crop&q=80',
+      order: 8,
       isActive: true,
       isFeatured: true
     }
